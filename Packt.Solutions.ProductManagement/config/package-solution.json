@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "packt-solutions-product-management-client-side-solution",
+    "id": "598b2a34-cb28-4231-8c70-5a07a02bf6dd",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.19.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Packt.Solutions.ProductManagement description"
+      },
+      "longDescription": {
+        "default": "Packt.Solutions.ProductManagement description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "packt-solutions-product-management Feature",
+        "description": "The feature that activates elements of the packt-solutions-product-management solution.",
+        "id": "00b84497-b64c-47e6-b787-fc70a19431ed",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/packt-solutions-product-management.sppkg"
+  }
+}
