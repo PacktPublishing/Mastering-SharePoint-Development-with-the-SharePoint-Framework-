@@ -1,43 +1,65 @@
-import { IProductCatalogItem, ProductSizes } from "../models/IProductCatalogItem";
+import { Log } from "@microsoft/sp-core-library";
+import {
+  IProductCatalogItem,
+  ProductSizes,
+} from "../models/IProductCatalogItem";
 import { IProductCatalogService } from "./IProductCatalogService";
+import { MSGraphClientV3 } from "@microsoft/sp-http";
 
 export class ProductCatalogService implements IProductCatalogService {
+  private _msGraphClient: MSGraphClientV3;
 
-    public async getProducts(): Promise<IProductCatalogItem[]> {
+  constructor(msGraphClient: MSGraphClientV3) {
+    this._msGraphClient = msGraphClient;
+  }
 
-        const productItems: IProductCatalogItem[] = [
-          {
-            modelName: "UltraBoost Running Shoes",
-            retailPrice: 180,
-            stockLevel: 25,
-            lastOrderDate: new Date("2023-04-01"),
-            itemPicture: "ultraboost.jpg",
-            itemColour: "Black",
-            size: ProductSizes.M,
-            productReference: "UB-001",
-          },
-          {
-            modelName: "Tech Fleece Hoodie",
-            retailPrice: 100,
-            stockLevel: 40,
-            lastOrderDate: new Date("2023-03-28"),
-            itemPicture: "techfleece.jpg",
-            itemColour: "Grey",
-            size: ProductSizes.L,
-            productReference: "TF-002",
-          },
-          {
-            modelName: "Water Bottle",
-            retailPrice: 25,
-            stockLevel: 100,
-            lastOrderDate: new Date("2023-03-15"),
-            itemPicture: "waterbottle.jpg",
-            itemColour: "Blue",
-            size: ProductSizes.S,
-            productReference: "WB-003",
-          }
-        ];
+  public async getProducts(
+    siteId: string,
+    listName: string
+  ): Promise<IProductCatalogItem[]> {
 
-        return productItems
+    // SharePoint columsn for a product
+    const fields = [
+      "packtProductColor",
+      "packtProductModelName",
+      "packtProductItemPicture",
+      "packtProductReference",
+      "packtProductRetailPrice",
+      "packtProductSize",
+      "packtProductStockLastOrderDate",
+      "packtProductStockLevel"
+    ];
+
+    try {
+
+      const response = await this._msGraphClient
+            .api(`sites/${siteId}/lists/${listName}/items`)
+            .expand(`fields($select=${fields})`)
+            .get();
+
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const items: IProductCatalogItem[] = response.value.map((item: any) => {
+            return {
+              modelName: item.fields.packtProductModelName,
+              lastOrderDate: item.fields.packtProductStockLastOrderDate
+                ? new Date(item.fields.packtProductStockLastOrderDate)
+                : null,
+              productReference: item.fields.packtProductReference,
+              stockLevel: item.fields.packtProductStockLevel,
+              size: item.fields.packtProductSize as ProductSizes,
+              retailPrice: item.fields.packtProductRetailPrice,
+              itemColour: item.fields.packtProductColor,
+              itemPicture: item.fields.packtProductItemPicture
+                ? JSON.parse(item.fields.packtProductItemPicture).serverRelativeUrl
+                : null,
+            } as IProductCatalogItem;
+          });
+
+          return items;
+    } catch (error) {
+      Log.error("ProductCatalogService", error);
+      return [];
     }
+    
+  }
 }

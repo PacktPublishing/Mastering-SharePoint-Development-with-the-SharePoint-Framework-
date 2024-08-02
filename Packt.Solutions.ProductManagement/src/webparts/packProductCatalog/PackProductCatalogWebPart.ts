@@ -11,26 +11,31 @@ import { IProductCatalogService } from '../../services/IProductCatalogService';
 import { ProductCatalogService } from '../../services/ProductCatalogService';
 
 export interface IPackProductCatalogWebPartProps {
+  productsListName: string;
 }
 
 export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPackProductCatalogWebPartProps> {
 
   private _productCatalogService: IProductCatalogService;
 
-
   public render(): void {
     const element: React.ReactElement<IPackProductCatalogProps> = React.createElement(
       PackProductCatalog,
       {
-        productCatalogService: this._productCatalogService
+        productCatalogService: this._productCatalogService,
+        siteId: this.context.pageContext.site.id.toString(),
+        listName: this.properties.productsListName
       }
     );
 
     ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
-    this._productCatalogService = new ProductCatalogService();
+  protected async onInit(): Promise<void> {
+
+    const msGraphClient = await this.context.msGraphClientFactory.getClient("3");
+    this._productCatalogService = new ProductCatalogService(msGraphClient);
+
     return super.onInit();
   }
 

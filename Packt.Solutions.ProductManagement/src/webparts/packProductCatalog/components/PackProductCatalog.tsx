@@ -30,7 +30,7 @@ export default class PackProductCatalog extends React.Component<
   }
   
   public async componentDidMount(): Promise<void> {
-    const productItems: IProductCatalogItem[] = await this.props.productCatalogService.getProducts();
+    const productItems: IProductCatalogItem[] = await this.props.productCatalogService.getProducts(this.props.siteId, this.props.listName);
 
     this.setState({
       productItems: productItems,

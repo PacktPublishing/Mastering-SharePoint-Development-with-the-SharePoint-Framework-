@@ -1,5 +1,5 @@
 import { IProductCatalogItem } from "../models/IProductCatalogItem";
 
 export interface IProductCatalogService {
-    getProducts(): Promise<IProductCatalogItem[]>;
+  getProducts(siteId: string, listName: string): Promise<IProductCatalogItem[]>;
 }
