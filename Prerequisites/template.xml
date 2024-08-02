@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2022/09/ProvisioningSchema">
+  <pnp:Preferences Generator="PnP.Framework, Version=1.16.0.0, Culture=neutral, PublicKeyToken=0d501f89f11b748c" />
+  <pnp:Templates ID="PACKT_CONTAINER-TEMPLATE">
+    <pnp:ProvisioningTemplate ID="TEMPLATE-PRODUCTS_INVENTORY_SOLUTION" Version="1" BaseSiteTemplate="SITEPAGEPUBLISHING#0" Scope="RootSite">
+      <pnp:SiteFields>
+        <Field DisplayName="Reference" Type="Text" Required="FALSE" ID="{23f3ad02-94d8-405b-9330-877e7ea0e1ef}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductReference" Name="packtProductReference" Group="_Packt" CustomFormatter="" EnforceUniqueValues="FALSE" MaxLength="255" Indexed="FALSE"></Field>
+        <Field Type="Number" DisplayName="Stock level" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Group="_Packt" ID="{3bc1ac3a-32b6-45a6-bac0-3cc20acc89c5}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductStockLevel" Name="packtProductStockLevel" CustomFormatter="" Min="0" Max="100" Percentage="FALSE"></Field>
+        <Field DisplayName="Retail Price" Type="Number" Required="FALSE" ID="{f09a933c-f229-4dc1-9873-e45c8820ea79}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductRetailPrice" Name="packtProductRetailPrice" Group="_Packt" CustomFormatter="" EnforceUniqueValues="FALSE" Decimals="2" Percentage="FALSE" Indexed="FALSE"></Field>
+        <Field DisplayName="Model Name" Type="Text" Required="FALSE" ID="{e8557b75-1fe2-4818-824e-7a12e4bd6ab2}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductModelName" Name="packtProductModelName" Group="_Packt" CustomFormatter="" EnforceUniqueValues="FALSE" MaxLength="255" Indexed="FALSE"></Field>
+        <Field DisplayName="Picture" Type="Thumbnail" Required="FALSE" ID="{0350c282-42aa-4b27-a829-ccd3c8c12498}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductItemPicture" Name="packtProductItemPicture" Group="_Packt" CustomFormatter="" EnforceUniqueValues="FALSE" Indexed="FALSE" />
+        <Field DisplayName="Size" Type="Choice" Required="FALSE" ID="{f7242d96-74f8-4f70-96c9-fad3e62f6ce7}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductSize" Name="packtProductSize" Group="_Packt" CustomFormatter="{&quot;elmType&quot;:&quot;div&quot;,&quot;style&quot;:{&quot;flex-wrap&quot;:&quot;wrap&quot;,&quot;display&quot;:&quot;flex&quot;},&quot;children&quot;:[{&quot;elmType&quot;:&quot;div&quot;,&quot;style&quot;:{&quot;box-sizing&quot;:&quot;border-box&quot;,&quot;padding&quot;:&quot;4px 8px 5px 8px&quot;,&quot;overflow&quot;:&quot;hidden&quot;,&quot;text-overflow&quot;:&quot;ellipsis&quot;,&quot;display&quot;:&quot;flex&quot;,&quot;border-radius&quot;:&quot;16px&quot;,&quot;height&quot;:&quot;24px&quot;,&quot;align-items&quot;:&quot;center&quot;,&quot;white-space&quot;:&quot;nowrap&quot;,&quot;margin&quot;:&quot;4px 4px 4px 4px&quot;},&quot;attributes&quot;:{&quot;class&quot;:{&quot;operator&quot;:&quot;:&quot;,&quot;operands&quot;:[{&quot;operator&quot;:&quot;==&quot;,&quot;operands&quot;:[&quot;@currentField&quot;,&quot;&quot;]},&quot;&quot;,{&quot;operator&quot;:&quot;:&quot;,&quot;operands&quot;:[{&quot;operator&quot;:&quot;==&quot;,&quot;operands&quot;:[&quot;@currentField&quot;,&quot;XS&quot;]},&quot;sp-css-backgroundColor-BgCornflowerBlue sp-field-fontSizeSmall sp-css-color-CornflowerBlueFont&quot;,{&quot;operator&quot;:&quot;:&quot;,&quot;operands&quot;:[{&quot;operator&quot;:&quot;==&quot;,&quot;operands&quot;:[&quot;@currentField&quot;,&quot;S&quot;]},&quot;sp-css-backgroundColor-BgMintGreen sp-field-fontSizeSmall sp-css-color-MintGreenFont&quot;,{&quot;operator&quot;:&quot;:&quot;,&quot;operands&quot;:[{&quot;operator&quot;:&quot;==&quot;,&quot;operands&quot;:[&quot;@currentField&quot;,&quot;M&quot;]},&quot;sp-css-backgroundColor-BgGold sp-field-fontSizeSmall sp-css-color-GoldFont&quot;,{&quot;operator&quot;:&quot;:&quot;,&quot;operands&quot;:[{&quot;operator&quot;:&quot;==&quot;,&quot;operands&quot;:[&quot;@currentField&quot;,&quot;L&quot;]},&quot;sp-css-backgroundColor-BgCoral sp-field-fontSizeSmall sp-css-color-CoralFont&quot;,{&quot;operator&quot;:&quot;:&quot;,&quot;operands&quot;:[{&quot;operator&quot;:&quot;==&quot;,&quot;operands&quot;:[&quot;@currentField&quot;,&quot;XL&quot;]},&quot;sp-css-backgroundColor-BgDustRose sp-field-fontSizeSmall sp-css-color-DustRoseFont&quot;,{&quot;operator&quot;:&quot;:&quot;,&quot;operands&quot;:[{&quot;operator&quot;:&quot;==&quot;,&quot;operands&quot;:[&quot;@currentField&quot;,&quot;XXL&quot;]},&quot;sp-css-backgroundColor-BgCyan sp-field-fontSizeSmall sp-css-color-CyanFont&quot;,&quot;sp-field-borderAllRegular sp-field-borderAllSolid sp-css-borderColor-neutralSecondary&quot;]}]}]}]}]}]}]}},&quot;txtContent&quot;:&quot;@currentField&quot;}],&quot;templateId&quot;:&quot;BgColorChoicePill&quot;}" EnforceUniqueValues="FALSE" FillInChoice="FALSE" Format="Dropdown" Indexed="FALSE">
+          <CHOICES>
+            <CHOICE>XS</CHOICE>
+            <CHOICE>S</CHOICE>
+            <CHOICE>M</CHOICE>
+            <CHOICE>L</CHOICE>
+            <CHOICE>XL</CHOICE>
+            <CHOICE>XXL</CHOICE>
+          </CHOICES>
+        </Field>
+        <Field DisplayName="Stock Last Order Date" Type="DateTime" Required="FALSE" ID="{ca8ef5bb-0115-4cd4-83d3-1336d5e95f97}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductStockLastOrderDate" Name="packtProductStockLastOrderDate" Group="_Packt" CustomFormatter="" EnforceUniqueValues="FALSE" FriendlyDisplayFormat="Disabled" Format="DateOnly" Indexed="FALSE" CalType="0"></Field>
+        <Field Type="Choice" DisplayName="Color" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="Dropdown" FillInChoice="FALSE" Group="_Packt" ID="{50e627bf-07c1-4a24-b9e7-ca212fa1315e}" SourceID="{9d341050-c5a7-40f7-a2f0-742c04511adb}" StaticName="packtProductColor" Name="packtProductColor" CustomFormatter="">
+          <CHOICES>
+            <CHOICE>Red</CHOICE>
+            <CHOICE>Blue</CHOICE>
+            <CHOICE>Green</CHOICE>
+            <CHOICE>Black</CHOICE>
+            <CHOICE>White</CHOICE>
+          </CHOICES>
+        </Field>
+      </pnp:SiteFields>
+      <pnp:ContentTypes>
+        <pnp:ContentType DisplayFormClientSideComponentId="" DisplayFormClientSideComponentProperties="" NewFormClientSideComponentProperties="" EditFormClientSideComponentId="" EditFormClientSideComponentProperties="" ID="0x0100C7398D84E2447E418A94CA9C19D40638" Name="Packt Product" Description="Represent a Pack from the product catalog inventory." Group="_Packt" NewFormUrl="" EditFormUrl="" DisplayFormUrl="" UpdateChildren="false">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" UpdateChildren="true" />
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" UpdateChildren="true" />
+            <pnp:FieldRef ID="e8557b75-1fe2-4818-824e-7a12e4bd6ab2" Name="packtProductModelName" UpdateChildren="true" />
+            <pnp:FieldRef ID="f09a933c-f229-4dc1-9873-e45c8820ea79" Name="packtProductRetailPrice" UpdateChildren="true" />
+            <pnp:FieldRef ID="ca8ef5bb-0115-4cd4-83d3-1336d5e95f97" Name="packtProductStockLastOrderDate" UpdateChildren="true" />
+            <pnp:FieldRef ID="0350c282-42aa-4b27-a829-ccd3c8c12498" Name="packtProductItemPicture" UpdateChildren="true" />
+            <pnp:FieldRef ID="23f3ad02-94d8-405b-9330-877e7ea0e1ef" Name="packtProductReference" UpdateChildren="true" />
+            <pnp:FieldRef ID="3bc1ac3a-32b6-45a6-bac0-3cc20acc89c5" Name="packtProductStockLevel" UpdateChildren="true" />
+            <pnp:FieldRef ID="50e627bf-07c1-4a24-b9e7-ca212fa1315e" Name="packtProductColor" UpdateChildren="true" />
+            <pnp:FieldRef ID="f7242d96-74f8-4f70-96c9-fad3e62f6ce7" Name="packtProductSize" UpdateChildren="true" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+      </pnp:ContentTypes>
+      <pnp:Lists>
+        <pnp:ListInstance Title="Products" Description="List of Packt products" DocumentTemplate="" OnQuickLaunch="true" TemplateType="100" Url="Lists/Products" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="50" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" ContentTypesEnabled="true" EnableFolderCreation="false" DefaultDisplayFormUrl="{site}/Lists/Products/DispForm.aspx" DefaultEditFormUrl="{site}/Lists/Products/EditForm.aspx" DefaultNewFormUrl="{site}/Lists/Products/NewForm.aspx" ImageUrl="/_layouts/15/images/itgen.png?rev=47" IrmExpire="false" IrmReject="false" IsApplicationList="false" ValidationFormula="" ValidationMessage="">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x0100C7398D84E2447E418A94CA9C19D40638" Default="true" />
+            <pnp:ContentTypeBinding ContentTypeID="0x0120" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views>
+            <View Name="{070D8392-92BD-4AA1-ADD0-43B36D0438DE}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="{site}/Lists/Products/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=47">
+              <Query />
+              <ViewFields>
+                <FieldRef Name="packtProductModelName" />
+                <FieldRef Name="packtProductRetailPrice" />
+                <FieldRef Name="packtProductItemPicture" />
+                <FieldRef Name="packtProductReference" />
+                <FieldRef Name="packtProductStockLevel" />
+                <FieldRef Name="packtProductStockLastOrderDate" />
+                <FieldRef Name="packtProductColor" />
+                <FieldRef Name="packtProductSize" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+            </View>
+          </pnp:Views>
+          <pnp:Fields>
+            <Field ID="{76d13cd2-1bae-45a5-8b74-545b87b65037}" Name="_ColorTag" DisplaceOnUpgrade="TRUE" ShowInFileDlg="FALSE" ReadOnly="TRUE" Type="Text" DisplayName="Color Tag" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="_ColorTag" FromBaseType="TRUE" ColName="nvarchar4" />
+          </pnp:Fields>
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" DisplayName="Title" />
+            <pnp:FieldRef ID="e8557b75-1fe2-4818-824e-7a12e4bd6ab2" Name="packtProductModelName" DisplayName="Model Name" />
+            <pnp:FieldRef ID="f09a933c-f229-4dc1-9873-e45c8820ea79" Name="packtProductRetailPrice" DisplayName="Retail Price" />
+            <pnp:FieldRef ID="ca8ef5bb-0115-4cd4-83d3-1336d5e95f97" Name="packtProductStockLastOrderDate" DisplayName="Stock Last Order Date" />
+            <pnp:FieldRef ID="0350c282-42aa-4b27-a829-ccd3c8c12498" Name="packtProductItemPicture" DisplayName="Picture" />
+            <pnp:FieldRef ID="23f3ad02-94d8-405b-9330-877e7ea0e1ef" Name="packtProductReference" DisplayName="Reference" />
+            <pnp:FieldRef ID="3bc1ac3a-32b6-45a6-bac0-3cc20acc89c5" Name="packtProductStockLevel" DisplayName="Stock level" />
+            <pnp:FieldRef ID="50e627bf-07c1-4a24-b9e7-ca212fa1315e" Name="packtProductColor" DisplayName="Color" />
+            <pnp:FieldRef ID="f7242d96-74f8-4f70-96c9-fad3e62f6ce7" Name="packtProductSize" DisplayName="Size" />
+          </pnp:FieldRefs>
+        </pnp:ListInstance>
+      </pnp:Lists>
+    </pnp:ProvisioningTemplate>
+  </pnp:Templates>
+</pnp:Provisioning>
