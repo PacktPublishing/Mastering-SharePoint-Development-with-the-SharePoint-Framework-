@@ -6,6 +6,7 @@ import {
 import { IPacktProductCatalogState } from "./IPacktProductCatalogState";
 import styles from "./PackProductCatalog.module.scss";
 import { ImageHelper } from "@microsoft/sp-image-helper";
+import * as PackProductCatalogStrings from "PackProductCatalogWebPartStrings";
 
 export default class PackProductCatalog extends React.Component<
   IPackProductCatalogProps,
@@ -36,14 +37,21 @@ export default class PackProductCatalog extends React.Component<
             >
               <div className={styles.productItemFooter}>
                 <div className={styles.tertiaryText}>
-                  <span>Reference: {productItem.productReference}</span>
+                  <span>
+                    {PackProductCatalogStrings.Labels.Reference}: {productItem.productReference}
+                  </span>
                 </div>
                 <div className={styles.primaryText}>
                   {productItem.modelName}
                 </div>
                 <div className={styles.secondaryText}>
-                  <span>Size: {productItem.size}</span>
-                  <span>Stock: {productItem.stockLevel}</span>
+                  <span>
+                    {PackProductCatalogStrings.Labels.Size}: {productItem.size}
+                  </span>
+                  <span>
+                    {PackProductCatalogStrings.Labels.StockLevel}:{" "}
+                    {productItem.stockLevel}
+                  </span>
                 </div>
               </div>
             </div>

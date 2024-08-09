@@ -40,7 +40,7 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
-    
+
     if (!currentTheme) {
       return;
     }
