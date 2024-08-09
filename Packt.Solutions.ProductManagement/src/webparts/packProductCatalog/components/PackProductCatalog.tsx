@@ -4,6 +4,8 @@ import {
   IProductCatalogItem,
 } from "../../../models/IProductCatalogItem";
 import { IPacktProductCatalogState } from "./IPacktProductCatalogState";
+import styles from "./PackProductCatalog.module.scss";
+import { ImageHelper } from "@microsoft/sp-image-helper";
 
 export default class PackProductCatalog extends React.Component<
   IPackProductCatalogProps,
@@ -19,13 +21,35 @@ export default class PackProductCatalog extends React.Component<
 
   public render(): React.ReactElement<IPackProductCatalogProps> {
     return (
-      <>
+      <div className={styles.productList}>
         {this.state.productItems.map((productItem: IProductCatalogItem) => {
           return (
-              <div key={productItem.productReference}>{productItem.modelName}</div>
+            <div
+              className={styles.productItem}
+              style={{
+                backgroundImage: `url(${ImageHelper.convertToImageUrl({
+                  sourceUrl: productItem.itemPicture,
+                  width: 250,
+                })})`,
+              }}
+              key={productItem.productReference}
+            >
+              <div className={styles.productItemFooter}>
+                <div className={styles.tertiaryText}>
+                  <span>Reference: {productItem.productReference}</span>
+                </div>
+                <div className={styles.primaryText}>
+                  {productItem.modelName}
+                </div>
+                <div className={styles.secondaryText}>
+                  <span>Size: {productItem.size}</span>
+                  <span>Stock: {productItem.stockLevel}</span>
+                </div>
+              </div>
+            </div>
           );
         })}
-      </>
+      </div>
     );
   }
   
