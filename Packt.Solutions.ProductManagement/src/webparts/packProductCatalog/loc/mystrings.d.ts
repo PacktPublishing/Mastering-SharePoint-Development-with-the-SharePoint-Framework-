@@ -4,6 +4,11 @@ declare interface IPackProductCatalogWebPartStrings {
     StockLevel: strings;
     Reference: string;
   };
+  TopActions: {
+    OneTile: string;
+    TwoTiles: string;
+    ThreeTiles: string;
+  }
 }
 
 declare module 'PackProductCatalogWebPartStrings' {

@@ -5,5 +5,10 @@ define([], function () {
       StockLevel: "Stock",
       Reference: "Reference",
     },
+    TopActions: {
+      OneTile: "One tile",
+      TwoTiles: "Two tiles",
+      ThreeTiles: "Three tiles"
+    }
   };
 });

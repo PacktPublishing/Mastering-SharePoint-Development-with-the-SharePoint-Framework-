@@ -4,4 +4,5 @@ export interface IPackProductCatalogProps {
   productCatalogService: IProductCatalogService;
   siteId: string;
   listName: string;
+  itemsCount: number;
 }

@@ -15,7 +15,8 @@ export class ProductCatalogService implements IProductCatalogService {
 
   public async getProducts(
     siteId: string,
-    listName: string
+    listName: string,
+    itemsCount?: number
   ): Promise<IProductCatalogItem[]> {
 
     // SharePoint columsn for a product
@@ -33,9 +34,10 @@ export class ProductCatalogService implements IProductCatalogService {
     try {
 
       const response = await this._msGraphClient
-            .api(`sites/${siteId}/lists/${listName}/items`)
-            .expand(`fields($select=${fields})`)
-            .get();
+        .api(`sites/${siteId}/lists/${listName}/items`)
+        .expand(`fields($select=${fields})`)
+        .top(itemsCount ? itemsCount : 50)
+        .get();
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const items: IProductCatalogItem[] = response.value.map((item: any) => {
