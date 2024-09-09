@@ -67,7 +67,7 @@ export default class PackProductCatalog extends React.Component<
 
   public async componentDidUpdate(prevProps: Readonly<IPackProductCatalogProps>): Promise<void> {
 
-    if (prevProps.itemsCount !== this.props.itemsCount) {
+    if (prevProps.itemsCount !== this.props.itemsCount || prevProps.listName !== this.props.listName) {
       await this.getItems();
     }
   }

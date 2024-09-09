@@ -9,6 +9,14 @@ define([], function () {
       OneTile: "One tile",
       TwoTiles: "Two tiles",
       ThreeTiles: "Three tiles"
+    },
+    PropertyPane: {
+      SettingsGroupName: "Settings",
+      ItemsCountFieldLabel: "Number of tiles to display"
+    },
+    Controls: {
+      AsyncListPickerFieldLabel: "Select the products list",
+      AsyncListPickerFieldPlaceholder: "Select an option..."
     }
   };
 });

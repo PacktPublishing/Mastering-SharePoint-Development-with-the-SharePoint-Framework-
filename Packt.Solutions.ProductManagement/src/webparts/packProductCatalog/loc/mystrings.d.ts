@@ -8,6 +8,14 @@ declare interface IPackProductCatalogWebPartStrings {
     OneTile: string;
     TwoTiles: string;
     ThreeTiles: string;
+  },
+  PropertyPane: {
+    SettingsGroupName: string;
+    ItemsCountFieldLabel: string;
+  },
+  Controls: {
+    AsyncListPickerFieldLabel: string;
+    AsyncListPickerFieldPlaceholder: string;
   }
 }
 

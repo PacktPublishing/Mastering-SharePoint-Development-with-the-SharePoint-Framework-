@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
+  PropertyPaneSlider,
+  PropertyPaneTextField,
   type IPropertyPaneConfiguration,
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
@@ -12,6 +14,10 @@ import { ProductCatalogService } from '../../services/ProductCatalogService';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { ITopActions, TopActionsFieldType } from '@microsoft/sp-top-actions';
 import * as PackProductCatalogStrings from "PackProductCatalogWebPartStrings";
+import * as strings from 'PackProductCatalogWebPartStrings';
+import { PropertyPaneAsyncListPicker } from '../../controls/PropertyPaneAsyncListPicker/PropertyPaneAsyncListPicker';
+import { MSGraphClientV3 } from '@microsoft/sp-http';
+
 
 export interface IPackProductCatalogWebPartProps {
   productsListName: string;
@@ -21,6 +27,7 @@ export interface IPackProductCatalogWebPartProps {
 export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPackProductCatalogWebPartProps> {
 
   private _productCatalogService: IProductCatalogService;
+  private _msGraphClient: MSGraphClientV3;
 
   public render(): void {
     const element: React.ReactElement<IPackProductCatalogProps> =
@@ -35,14 +42,14 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
   }
 
   protected async onInit(): Promise<void> {
-    const msGraphClient = await this.context.msGraphClientFactory.getClient(
+    this._msGraphClient = await this.context.msGraphClientFactory.getClient(
       "3"
     );
-    this._productCatalogService = new ProductCatalogService(msGraphClient);
+    this._productCatalogService = new ProductCatalogService(this._msGraphClient);
  
     return super.onInit();
   }
-
+  
   public getTopActionsConfiguration(): ITopActions | undefined {
 
     return {
@@ -106,7 +113,39 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
-      pages: [],
+      pages: [
+        {
+          groups: [
+            {
+              groupName: strings.PropertyPane.SettingsGroupName,
+              groupFields: [
+                PropertyPaneSlider("itemsCount", { 
+                  min: 1,
+                  max: 5,
+                  label: strings.PropertyPane.ItemsCountFieldLabel,
+                  showValue: true,
+                  value: this.properties.itemsCount,
+                  step: 1                
+                }),
+                PropertyPaneTextField("itemsCount", {
+                  label: strings.PropertyPane.ItemsCountFieldLabel,
+                  onGetErrorMessage: (value: string) => {
+                    if (!/^\d+$/.test(value)) {
+                      return "Value should be a number"
+                    }
+                    return "";
+                  }
+                }),
+                new PropertyPaneAsyncListPicker("productsListName", {
+                  msGraphClient: this._msGraphClient,
+                  siteId: this.context.pageContext.site.id.toString(),
+                  defaultListName: this.properties.productsListName
+                })
+              ]
+            }
+          ]
+        }
+      ]
     };
   }
 }
