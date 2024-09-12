@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/packProductCatalog/PackProductCatalogWebPart.manifest.json"
         }
       ]
+    },
+    "packt-product-search-box-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/packtProductSearchBox/PacktProductSearchBoxWebPart.js",
+          "manifest": "./src/webparts/packtProductSearchBox/PacktProductSearchBoxWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "PackProductCatalogWebPartStrings": "lib/webparts/packProductCatalog/loc/{locale}.js"
+    "PackProductCatalogWebPartStrings": "lib/webparts/packProductCatalog/loc/{locale}.js",
+    "PacktProductSearchBoxWebPartStrings": "lib/webparts/packtProductSearchBox/loc/{locale}.js"
   }
 }

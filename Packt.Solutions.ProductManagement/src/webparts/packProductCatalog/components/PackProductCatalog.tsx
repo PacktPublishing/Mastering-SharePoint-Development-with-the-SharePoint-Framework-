@@ -67,13 +67,15 @@ export default class PackProductCatalog extends React.Component<
 
   public async componentDidUpdate(prevProps: Readonly<IPackProductCatalogProps>): Promise<void> {
 
-    if (prevProps.itemsCount !== this.props.itemsCount || prevProps.listName !== this.props.listName) {
+    if (prevProps.itemsCount !== this.props.itemsCount || 
+        prevProps.listName !== this.props.listName ||
+        prevProps.searchQuery !== this.props.searchQuery) {
       await this.getItems();
     }
   }
 
   private async getItems(): Promise<void> {
-    const productItems: IProductCatalogItem[] = await this.props.productCatalogService.getProducts(this.props.siteId, this.props.listName, this.props.itemsCount);
+    const productItems: IProductCatalogItem[] = await this.props.productCatalogService.getProducts(this.props.siteId, this.props.listName, this.props.itemsCount, this.props.searchQuery);
 
     this.setState({
       productItems: productItems,

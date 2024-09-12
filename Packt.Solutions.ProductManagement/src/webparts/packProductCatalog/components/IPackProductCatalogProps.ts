@@ -5,4 +5,5 @@ export interface IPackProductCatalogProps {
   siteId: string;
   listName: string;
   itemsCount: number;
+  searchQuery?: string;
 }

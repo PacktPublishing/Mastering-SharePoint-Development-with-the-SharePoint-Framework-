@@ -12,14 +12,15 @@ export class ProductCatalogService implements IProductCatalogService {
   constructor(msGraphClient: MSGraphClientV3) {
     this._msGraphClient = msGraphClient;
   }
-
+  
   public async getProducts(
     siteId: string,
     listName: string,
-    itemsCount?: number
+    itemsCount?: number,
+    searchQuery?: string
   ): Promise<IProductCatalogItem[]> {
 
-    // SharePoint columsn for a product
+    // SharePoint columns for a product
     const fields = [
       "packtProductColor",
       "packtProductModelName",
@@ -32,36 +33,38 @@ export class ProductCatalogService implements IProductCatalogService {
     ];
 
     try {
-
+      
       const response = await this._msGraphClient
         .api(`sites/${siteId}/lists/${listName}/items`)
+        .filter(searchQuery ? `startswith(fields/packtProductModelName, '${searchQuery}') or startswith(fields/packtProductColor, '${searchQuery}') or startswith(fields/packtProductSize, '${searchQuery}')`:'')
         .expand(`fields($select=${fields})`)
         .top(itemsCount ? itemsCount : 50)
+        .header("Prefer", "HonorNonIndexedQueriesWarningMayFailRandomly")
         .get();
 
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const items: IProductCatalogItem[] = response.value.map((item: any) => {
-            return {
-              modelName: item.fields.packtProductModelName,
-              lastOrderDate: item.fields.packtProductStockLastOrderDate
-                ? new Date(item.fields.packtProductStockLastOrderDate)
-                : null,
-              productReference: item.fields.packtProductReference,
-              stockLevel: item.fields.packtProductStockLevel,
-              size: item.fields.packtProductSize as ProductSizes,
-              retailPrice: item.fields.packtProductRetailPrice,
-              itemColour: item.fields.packtProductColor,
-              itemPicture: item.fields.packtProductItemPicture
-                ? JSON.parse(item.fields.packtProductItemPicture).serverRelativeUrl
-                : null,
-            } as IProductCatalogItem;
-          });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const items: IProductCatalogItem[] = response.value.map((item: any) => {
+        return {
+          modelName: item.fields.packtProductModelName,
+          lastOrderDate: item.fields.packtProductStockLastOrderDate
+            ? new Date(item.fields.packtProductStockLastOrderDate)
+            : null,
+          productReference: item.fields.packtProductReference,
+          stockLevel: item.fields.packtProductStockLevel,
+          size: item.fields.packtProductSize as ProductSizes,
+          retailPrice: item.fields.packtProductRetailPrice,
+          itemColour: item.fields.packtProductColor,
+          itemPicture: item.fields.packtProductItemPicture
+            ? JSON.parse(item.fields.packtProductItemPicture).serverRelativeUrl
+            : null,
+        } as IProductCatalogItem;
+      });
 
-          return items;
+      return items;
+
     } catch (error) {
       Log.error("ProductCatalogService", error);
       return [];
     }
-    
-  }
+  }  
 }

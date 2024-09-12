@@ -1,27 +1,38 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import { Guid, Version } from '@microsoft/sp-core-library';
 import {
+  PropertyPaneDynamicField,
+  PropertyPaneHorizontalRule,
   PropertyPaneSlider,
   PropertyPaneTextField,
+  PropertyPaneToggle,
   type IPropertyPaneConfiguration,
 } from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { BaseClientSideWebPart, IWebPartPropertiesMetadata } from '@microsoft/sp-webpart-base';
 import PackProductCatalog from './components/PackProductCatalog';
 import { IPackProductCatalogProps } from './components/IPackProductCatalogProps';
 import { IProductCatalogService } from '../../services/IProductCatalogService';
 import { ProductCatalogService } from '../../services/ProductCatalogService';
-import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import { DynamicProperty, IReadonlyTheme } from '@microsoft/sp-component-base';
 import { ITopActions, TopActionsFieldType } from '@microsoft/sp-top-actions';
 import * as PackProductCatalogStrings from "PackProductCatalogWebPartStrings";
 import * as strings from 'PackProductCatalogWebPartStrings';
 import { PropertyPaneAsyncListPicker } from '../../controls/PropertyPaneAsyncListPicker/PropertyPaneAsyncListPicker';
 import { MSGraphClientV3 } from '@microsoft/sp-http';
 
-
 export interface IPackProductCatalogWebPartProps {
   productsListName: string;
   itemsCount: number;
+  useDynamicSearchQuery: boolean;
+  searchQuery: DynamicProperty<string>;
+  
+  /*  Scenario when consuming multiple dynamic properties from a single source
+
+  myProperty1: DynamicProperty<string>;
+  myProperty2: DynamicProperty<string>;
+
+  */
 }
 
 export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPackProductCatalogWebPartProps> {
@@ -35,7 +46,8 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
         productCatalogService: this._productCatalogService,
         siteId: this.context.pageContext.site.id.toString(),
         listName: this.properties.productsListName,
-        itemsCount: this.properties.itemsCount
+        itemsCount: this.properties.itemsCount,
+        searchQuery: this.properties.searchQuery.tryGetValue()
       });
 
     ReactDom.render(element, this.domElement);
@@ -111,39 +123,135 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
     return Version.parse("1.0");
   }
 
+  protected get propertiesMetadata(): IWebPartPropertiesMetadata | undefined {
+      return {
+        'searchQuery': {
+          dynamicPropertyType: 'string'
+        },
+
+        /* Scenario when consuming multiple dynamic properties from a single source
+
+        'myProperty1': {
+          dynamicPropertyType: 'string'
+        },
+        'myProperty2': {
+          dynamicPropertyType: 'string'
+        }
+        */
+      };
+  }
+
+  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
+
+    if (propertyPath === 'useDynamicSearchQuery' && !newValue) {
+        // Disconnect the source
+        this.properties.searchQuery.setValue('');
+        this.properties.searchQuery.unregister(this.render);
+    }
+
+    if (propertyPath === 'searchQuery') {
+      this.properties.searchQuery.register(this.render);
+    }
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+
+    const groupFields = [
+      PropertyPaneSlider("itemsCount", { 
+        min: 1,
+        max: 5,
+        label: strings.PropertyPane.ItemsCountFieldLabel,
+        showValue: true,
+        value: this.properties.itemsCount,
+        step: 1                
+      }),
+      PropertyPaneTextField("itemsCount", {
+        label: strings.PropertyPane.ItemsCountFieldLabel,
+        onGetErrorMessage: (value: string) => {
+          if (!/^\d+$/.test(value)) {
+            return "Value should be a number"
+          }
+          return "";
+        }
+      }),
+      new PropertyPaneAsyncListPicker("productsListName", {
+        msGraphClient: this._msGraphClient,
+        siteId: this.context.pageContext.site.id.toString(),
+        defaultListName: this.properties.productsListName
+      }),
+      PropertyPaneHorizontalRule(),
+      PropertyPaneToggle("useDynamicSearchQuery", {
+        checked: this.properties.useDynamicSearchQuery,
+        label: strings.PropertyPane.UseDynamicSearchQueryFieldLabel
+      })
+    ];
+
+    if (this.properties.useDynamicSearchQuery) {
+      groupFields.push(
+        PropertyPaneDynamicField('searchQuery', {
+          label: strings.PropertyPane.SearchQueryDynamicField,
+          filters: {
+            componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
+          }           
+        }),
+        /* Scenario when consuming multiple dynamic properties from a single source 
+
+        PropertyPaneDynamicFieldSet({
+          label: 'Select a property',
+          fields: [
+            PropertyPaneDynamicField('myProperty1', {
+              label: "My property 1"      
+            }),
+            PropertyPaneDynamicField('myProperty2', {
+              label: "My property 2"         
+            }),
+          ],
+          sharedConfiguration: {
+            depth: DynamicDataSharedDepth.Source,
+            source: {
+              sourcesLabel: "My source",
+              filters: {
+                componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
+              }
+            }
+          }
+        })*/
+      );
+    }
+
     return {
       pages: [
         {
           groups: [
             {
               groupName: strings.PropertyPane.SettingsGroupName,
-              groupFields: [
-                PropertyPaneSlider("itemsCount", { 
-                  min: 1,
-                  max: 5,
-                  label: strings.PropertyPane.ItemsCountFieldLabel,
-                  showValue: true,
-                  value: this.properties.itemsCount,
-                  step: 1                
-                }),
-                PropertyPaneTextField("itemsCount", {
-                  label: strings.PropertyPane.ItemsCountFieldLabel,
-                  onGetErrorMessage: (value: string) => {
-                    if (!/^\d+$/.test(value)) {
-                      return "Value should be a number"
-                    }
-                    return "";
-                  }
-                }),
-                new PropertyPaneAsyncListPicker("productsListName", {
-                  msGraphClient: this._msGraphClient,
-                  siteId: this.context.pageContext.site.id.toString(),
-                  defaultListName: this.properties.productsListName
-                })
-              ]
+              groupFields: groupFields
             }
-          ]
+            /* Scenario when using conditional groups to manage static/dynamic values
+            {
+              primaryGroup: {
+                groupName: "Configure static group",
+                groupFields: [
+                  PropertyPaneTextField('searchQuery', {
+                    label: strings.PropertyPane.SearchQueryDynamicField,
+                  })
+                ]
+              },
+              secondaryGroup: {
+                groupName: "Configure dynamic value",
+                groupFields: [
+                  PropertyPaneDynamicField('searchQuery', {
+                    label: strings.PropertyPane.SearchQueryDynamicField,
+                    filters: {
+                      componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
+                    }           
+                  })
+                ]
+              },
+              showSecondaryGroup: !!this.properties.searchQuery.tryGetSource()
+            } as IPropertyPaneConditionalGroup
+             */
+        ]
         }
       ]
     };

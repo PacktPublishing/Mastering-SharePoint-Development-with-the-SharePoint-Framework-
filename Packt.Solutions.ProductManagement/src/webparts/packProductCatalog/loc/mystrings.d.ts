@@ -12,6 +12,8 @@ declare interface IPackProductCatalogWebPartStrings {
   PropertyPane: {
     SettingsGroupName: string;
     ItemsCountFieldLabel: string;
+    UseDynamicSearchQueryFieldLabel: string;
+    SearchQueryDynamicField: string;
   },
   Controls: {
     AsyncListPickerFieldLabel: string;

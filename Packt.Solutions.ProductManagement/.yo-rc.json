@@ -7,9 +7,9 @@
     "skipFeatureDeployment": true,
     "componentType": "webpart",
     "template": "react",
-    "componentName": "PackProductCatalog",
+    "componentName": "PacktProductSearchBox",
     "plusBeta": false,
-    "isCreatingSolution": true,
+    "isCreatingSolution": false,
     "nodeVersion": "18.19.0",
     "sdksVersions": {
       "@microsoft/microsoft-graph-client": "3.0.2",
