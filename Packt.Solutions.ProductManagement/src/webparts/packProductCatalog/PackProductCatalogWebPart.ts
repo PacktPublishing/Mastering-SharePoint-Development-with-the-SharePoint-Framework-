@@ -39,6 +39,7 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
 
   private _productCatalogService: IProductCatalogService;
   private _msGraphClient: MSGraphClientV3;
+  private _runInTeams: boolean;
 
   public render(): void {
     const element: React.ReactElement<IPackProductCatalogProps> =
@@ -54,10 +55,14 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
   }
 
   protected async onInit(): Promise<void> {
+
     this._msGraphClient = await this.context.msGraphClientFactory.getClient(
       "3"
     );
+    
     this._productCatalogService = new ProductCatalogService(this._msGraphClient);
+
+    this._runInTeams = await !!this.context.sdks.microsoftTeams?.teamsJs.app.getContext()
  
     return super.onInit();
   }
@@ -120,7 +125,7 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
   }
 
   protected get dataVersion(): Version {
-    return Version.parse("1.0");
+    return Version.parse(this.context.manifest.version);
   }
 
   protected get propertiesMetadata(): IWebPartPropertiesMetadata | undefined {
@@ -141,7 +146,7 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
       };
   }
 
-  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
+  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: unknown, newValue: unknown): void {
 
     if (propertyPath === 'useDynamicSearchQuery' && !newValue) {
         // Disconnect the source
@@ -180,43 +185,49 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
         defaultListName: this.properties.productsListName
       }),
       PropertyPaneHorizontalRule(),
-      PropertyPaneToggle("useDynamicSearchQuery", {
-        checked: this.properties.useDynamicSearchQuery,
-        label: strings.PropertyPane.UseDynamicSearchQueryFieldLabel
-      })
     ];
 
-    if (this.properties.useDynamicSearchQuery) {
+    // Display only option if not in a Teams context
+    if (!this._runInTeams) {
       groupFields.push(
-        PropertyPaneDynamicField('searchQuery', {
-          label: strings.PropertyPane.SearchQueryDynamicField,
-          filters: {
-            componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
-          }           
-        }),
-        /* Scenario when consuming multiple dynamic properties from a single source 
-
-        PropertyPaneDynamicFieldSet({
-          label: 'Select a property',
-          fields: [
-            PropertyPaneDynamicField('myProperty1', {
-              label: "My property 1"      
-            }),
-            PropertyPaneDynamicField('myProperty2', {
-              label: "My property 2"         
-            }),
-          ],
-          sharedConfiguration: {
-            depth: DynamicDataSharedDepth.Source,
-            source: {
-              sourcesLabel: "My source",
-              filters: {
-                componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
+        PropertyPaneToggle("useDynamicSearchQuery", {
+          checked: this.properties.useDynamicSearchQuery,
+          label: strings.PropertyPane.UseDynamicSearchQueryFieldLabel
+        })
+      );
+      
+      if (this.properties.useDynamicSearchQuery) {
+        groupFields.push(
+          PropertyPaneDynamicField('searchQuery', {
+            label: strings.PropertyPane.SearchQueryDynamicField,
+            filters: {
+              componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
+            }           
+          }),
+          /* Scenario when consuming multiple dynamic properties from a single source 
+  
+          PropertyPaneDynamicFieldSet({
+            label: 'Select a property',
+            fields: [
+              PropertyPaneDynamicField('myProperty1', {
+                label: "My property 1"      
+              }),
+              PropertyPaneDynamicField('myProperty2', {
+                label: "My property 2"         
+              }),
+            ],
+            sharedConfiguration: {
+              depth: DynamicDataSharedDepth.Source,
+              source: {
+                sourcesLabel: "My source",
+                filters: {
+                  componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
+                }
               }
             }
-          }
-        })*/
-      );
+          })*/
+        );
+      }
     }
 
     return {

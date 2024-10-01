@@ -1,0 +1,83 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.16",
+    "packageName": "Packt - Product Catalog",
+    "id": "ab225f70-c1a8-4d87-a527-78d74542a9d9",
+    "version": "1.0.2",
+    "developer": {
+      "name": "SPFx + Teams Dev",
+      "websiteUrl": "https://products.office.com/en-us/sharepoint/collaboration",
+      "privacyUrl": "https://privacy.microsoft.com/en-us/privacystatement",
+      "termsOfUseUrl": "https://www.microsoft.com/en-us/servicesagreement"
+    },
+    "name": {
+      "short": "Packt - Product Catalog",
+      "full": "Packt - Product Catalog"
+    },
+    "description": {
+      "short": "Packt - Product Catalog",
+      "full": "Packt - Product Catalog"
+    },
+    "icons": {
+      "outline": "ab225f70-c1a8-4d87-a527-78d74542a9d9_outline.png",
+      "color": "ab225f70-c1a8-4d87-a527-78d74542a9d9_color.png"
+    },
+    "accentColor": "#004578",
+    "configurableTabs": [
+      {
+        "configurationUrl": "https://{teamSiteDomain}/_layouts/15/TeamsLogon.aspx?SPFX=true&dest=/_layouts/15/teamshostedapp.aspx%3FopenPropertyPane=true%26teams%26componentId=ab225f70-c1a8-4d87-a527-78d74542a9d9%26forceLocale={locale}",
+        "canUpdateConfiguration": false,
+        "scopes": [
+          "team",
+          "groupchat"
+        ],
+        "context": [
+          "channelTab",
+          "privateChatTab",
+          "meetingSidePanel",
+          "meetingDetailsTab",
+          "meetingChatTab"
+        ]
+      }
+    ],
+    "composeExtensions": [
+        {
+        "botId": "ab225f70-c1a8-4d87-a527-78d74542a9d9",
+        "canUpdateConfiguration": true,
+        "commands": [
+            {
+            "id": "packtProductCatalog",
+            "type": "action",
+            "title": "View product catalog",
+            "description": "View current Packt product catalog",
+            "initialRun": false,
+            "fetchTask": false,
+            "context": [
+                "commandBox",
+                "compose"
+            ],
+            "taskInfo": {
+                "title": "View catalog",
+                "width": "1100",
+                "height": "665",
+                "url": "https://{teamSiteDomain}/_layouts/15/TeamsLogon.aspx?SPFX=true&dest=/_layouts/15/teamstaskhostedapp.aspx%3Fteams%26personal%26componentId=ab225f70-c1a8-4d87-a527-78d74542a9d9%26forceLocale={locale}"
+            }
+            }
+        ]
+        }
+    ],
+    "validDomains": [
+      "*.login.microsoftonline.com",
+      "*.sharepoint.com",
+      "*.sharepoint-df.com",
+      "spoppe-a.akamaihd.net",
+      "spoprod-a.akamaihd.net",
+      "resourceseng.blob.core.windows.net",
+      "msft.spoppe.com"
+    ],
+    "webApplicationInfo": {
+      "resource": "https://{teamSiteDomain}",
+      "id": "00000003-0000-0ff1-ce00-000000000000"
+    }
+  }
+  

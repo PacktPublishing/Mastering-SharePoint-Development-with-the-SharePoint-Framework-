@@ -1,0 +1,67 @@
+trigger:
+- main
+- release/*
+- develop
+- feature/*
+- hotfix/*
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- ${{ if contains(variables['Build.SourceBranch'], 'refs/heads/release') }}:
+  - group: preproduction
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/develop') }}:
+  - group: staging
+- ${{ if contains(variables['Build.SourceBranch'], 'refs/heads/feature') }}:
+  - group: dev
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+  - group: production
+- ${{ if contains(variables['Build.SourceBranch'], 'refs/heads/hotfix')}}:
+  - group: production
+
+jobs:
+  - job: deploy_spfx_solution
+    displayName: 'Deploy SPFx'
+    steps:
+
+      - checkout: self
+        fetchDepth: 0 
+        
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '18.x'
+        displayName: Install Node.js
+
+      - task: gitversion/setup@3.0.0
+        displayName: Setup GitVersion
+        inputs:
+          versionSpec: '6.x'
+          
+      - task: gitversion/execute@3.0.0
+        name: gitversion
+        displayName: Determine Version
+
+      - bash: |
+          npm ci
+        displayName: Install dependencies
+
+      - bash: |
+          gulp version --newversion  $(gitversion.majorMinorPatch)
+        displayName: Version solution
+
+      - bash: |
+          gulp bundle --ship
+        displayName: Bundle solution
+
+      - bash: |
+          gulp package-solution --ship
+        displayName: Package solution    
+          
+      - bash: |
+          npm i -g @pnp/cli-microsoft365
+          m365 login --authType certificate --certificateBase64Encoded $(ENV_spDeployAppCertificateValue) --thumbprint $(ENV_spDeployAppCertificateThumbprint) --appId $(ENV_spDeployAppId) --tenant $(ENV_spDeployTenantId)
+          m365 spo app add --filePath ./packt-solutions-product-management.sppkg -s tenant --overwrite
+          m365 spo app deploy --name packt-solutions-product-management.sppkg -s tenant --skipFeatureDeployment
+        workingDirectory: ./sharepoint/solution
+        displayName: Deploy to tenant app catalog

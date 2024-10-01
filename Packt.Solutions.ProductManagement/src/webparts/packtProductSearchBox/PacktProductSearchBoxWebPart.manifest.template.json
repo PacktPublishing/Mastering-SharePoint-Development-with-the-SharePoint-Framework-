@@ -3,7 +3,7 @@
   "id": "c6609154-e547-4c70-957e-9ec482df52a1",
   "alias": "PacktProductSearchBoxWebPart",
   "componentType": "WebPart",
-  "version": "*",
+  "version": "{{VERSION}}",
   "manifestVersion": 2,
   "requiresCustomScript": false,
   "supportedHosts": ["SharePointWebPart"],

@@ -55,6 +55,7 @@ export default class PacktProductSearchBoxWebPart extends BaseClientSideWebPart<
 
 
   public render(): void {
+    
     const element: React.ReactElement<IPacktProductSearchBoxProps> = React.createElement(
       PacktProductSearchBox,
       {
@@ -80,7 +81,7 @@ export default class PacktProductSearchBoxWebPart extends BaseClientSideWebPart<
   }
 
   protected get dataVersion(): Version {
-    return Version.parse('1.0');
+    return Version.parse(this.context.manifest.version);
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
