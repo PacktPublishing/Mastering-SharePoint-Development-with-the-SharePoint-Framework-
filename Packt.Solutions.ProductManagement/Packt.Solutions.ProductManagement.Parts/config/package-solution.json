@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "packt-solutions-product-management-client-side-solution",
+    "name": "Packt - Product Management Parts",
     "id": "598b2a34-cb28-4231-8c70-5a07a02bf6dd",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,

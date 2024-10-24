@@ -1,7 +1,7 @@
 import * as React from "react";
-import { IListService } from "../../../services/IListService";
-import { ListService } from "../../../services/ListService";
-import { IList } from "../../../models/IList";
+import { IListService } from "@packt/spfx-shared-services";
+import { ListService } from "@packt/spfx-shared-services";
+import { IList } from "@packt/spfx-shared-services";
 import { ComboBox, IComboBox, IComboBoxOption, Spinner, SpinnerSize } from "@fluentui/react";
 import { IPropertyPaneAsyncListPickerProps } from "../IPropertyPaneAsyncListPickerProps";
 import * as strings from 'PackProductCatalogWebPartStrings';
