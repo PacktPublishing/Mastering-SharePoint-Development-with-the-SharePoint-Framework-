@@ -1,12 +1,13 @@
 [CmdletBinding()]
 Param (
     [Parameter(Mandatory=$true)]
-    [string]$SiteUrl
+    [string]$SiteUrl,
+
+    [Parameter(Mandatory=$true)]
+    [string]$ClientId
 )
 
-#$SiteUrl = "https://sonbaedev.sharepoint.com/sites/packt2"
-
-Connect-PnPOnline -Url $SiteUrl -Interactive
+Connect-PnPOnline -Url $SiteUrl -Interactive -ClientId $ClientId
 
 # Apply site template
 Invoke-PnPSiteTemplate -Path "./template.xml"
