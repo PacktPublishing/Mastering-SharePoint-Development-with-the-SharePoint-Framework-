@@ -5,12 +5,12 @@
     "environment": "spo",
     "packageManager": "npm",
     "skipFeatureDeployment": true,
-    "componentType": "webpart",
+    "componentType": "extension",
     "template": "react",
-    "componentName": "PacktProductSearchBox",
+    "componentName": "PacktProductFormCustomizer",
     "plusBeta": false,
     "isCreatingSolution": false,
-    "nodeVersion": "18.19.0",
+    "nodeVersion": "18.20.4",
     "sdksVersions": {
       "@microsoft/microsoft-graph-client": "3.0.2",
       "@microsoft/teams-js": "2.12.0"
@@ -19,6 +19,7 @@
     "libraryName": "packt-solutions-product-management",
     "libraryId": "598b2a34-cb28-4231-8c70-5a07a02bf6dd",
     "solutionShortDescription": "Packt.Solutions.ProductManagement description",
-    "isDomainIsolated": false
+    "isDomainIsolated": false,
+    "extensionType": "FormCustomizer"
   }
 }
