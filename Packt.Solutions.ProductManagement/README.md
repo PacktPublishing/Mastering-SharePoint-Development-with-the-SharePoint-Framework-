@@ -4,5 +4,5 @@ This repository contains SPFx samples used in the book **"Mastering SharePoint D
 
 This specific version covers the following in the book:
 
-Part 2: Build WebParts with the SharePoint Framework
-├─ Chapter 4: Deploying a SharePoint WebPart
+Part 4: Go further with the SharePoint Framework
+├─ Chapter 4: Write tests with Jest

@@ -22,11 +22,12 @@ export default class PackProductCatalog extends React.Component<
 
   public render(): React.ReactElement<IPackProductCatalogProps> {
     return (
-      <div className={styles.productList}>
+      <div className={styles.productList} role="list">
         {this.state.productItems.map((productItem: IProductCatalogItem) => {
           return (
             <div
               className={styles.productItem}
+              role="listitem"
               style={{
                 backgroundImage: `url(${ImageHelper.convertToImageUrl({
                   sourceUrl: productItem.itemPicture,

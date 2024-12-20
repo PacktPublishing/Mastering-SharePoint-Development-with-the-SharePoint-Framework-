@@ -13,13 +13,14 @@
     "outDir": "lib",
     "inlineSources": false,
     "noImplicitAny": true,
-
+    "esModuleInterop": true,
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@microsoft"
     ],
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "jest"
     ],
     "lib": [
       "es5",
