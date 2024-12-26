@@ -33,8 +33,12 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
 
   protected async onInit(): Promise<void> {
 
-    const msGraphClient = await this.context.msGraphClientFactory.getClient("3");
-    this._productCatalogService = new ProductCatalogService(msGraphClient);
+    // Usage with MS Graph API
+    /*const msGraphClient = await this.context.msGraphClientFactory.getClient("3");
+    this._productCatalogService = new ProductCatalogService(msGraphClient);*/
+
+    // Usage with SharePoint REST API
+    this._productCatalogService = new ProductCatalogService(this.context.spHttpClient, this.context.pageContext.web.absoluteUrl);
 
     return super.onInit();
   }
