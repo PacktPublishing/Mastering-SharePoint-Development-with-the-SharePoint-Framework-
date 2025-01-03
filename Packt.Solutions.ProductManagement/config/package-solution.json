@@ -14,6 +14,16 @@
       "termsOfUseUrl": "",
       "mpnId": "Undefined-1.19.0"
     },
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Sites.Read.All"
+      },
+      {
+        "resource": "demospfxfunction",
+        "scope": "user_impersonation"
+      }
+    ],
     "metadata": {
       "shortDescription": {
         "default": "Packt.Solutions.ProductManagement description"
