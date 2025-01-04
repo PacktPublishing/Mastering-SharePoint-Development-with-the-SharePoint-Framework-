@@ -8,7 +8,7 @@ import { ProductSizes } from '../../../models/IProductCatalogItem';
 
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Label } from '@fluentui/react/lib/Label';
-// import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
+import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
 
 
@@ -32,7 +32,7 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
   }
 
   // Define the size options with the "shirt" icon
- /*  private _sizeOptions: IChoiceGroupOption[] = [
+  private _sizeOptions: IChoiceGroupOption[] = [
     { key: ProductSizes[ProductSizes.XS], text: 'XS', iconProps: { iconName: 'shirt', style: { fontSize: '10px' } } },
     { key: ProductSizes[ProductSizes.S], text: 'S', iconProps: { iconName: 'shirt', style: { fontSize: '12px' } } },
     { key: ProductSizes[ProductSizes.M], text: 'M', iconProps: { iconName: 'shirt', style: { fontSize: '14px' } } },
@@ -41,7 +41,7 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
     { key: ProductSizes[ProductSizes.XXL], text: 'XXL', iconProps: { iconName: 'shirt', style: { fontSize: '20px' } } }
   ];
 
-  private _colourOptions: string[] = ['Red', 'Blue', 'Green', 'Black', 'White']; */
+  private _colourOptions: string[] = ['Red', 'Blue', 'Green', 'Black', 'White'];
 
   public componentDidMount(): void {
     if (this.props.displayMode === FormDisplayMode.New) {
@@ -99,10 +99,30 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
       <div className={styles.packtProductFormCustomizer}>
         <TextField label="Model Name" value={this.state.product?.modelName} />
         <TextField label="Retail Price" value={this.state.product?.retailPrice.toString()} />
-        <TextField label="Stock Level" value={this.state.product?.stockLevel.toString()}  />
+        <TextField label="Stock Level" value={this.state.product?.stockLevel.toString()} />
         <TextField label="Item Picture" value={this.state.product?.itemPicture} />
-        <TextField label="Item Colour" value={this.state.product?.itemColour} />
-        <TextField label="Item Size" value={this.state.product?.size ? ProductSizes[this.state.product?.size] : ""} />
+        <div>
+          <Label>Item Colour</Label>
+          <div className={styles.productColourContainer}>
+            {this._colourOptions.map(colour => (
+              <div
+                key={colour}
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  backgroundColor: colour.toLowerCase(),
+                  border: this.state.product?.itemColour === colour ? '2px solid black' : '1px solid gray',
+                  cursor: 'pointer'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+        <ChoiceGroup
+          label="Size"
+          selectedKey={this.state.product?.size}
+          options={this._sizeOptions}
+        />
         <TextField label="Product Reference" value={this.state.product?.productReference} />
         <TextField label="Last Order Date" value={this.state.product?.lastOrderDate?.toDateString()} />
         <PrimaryButton text="Save" />
