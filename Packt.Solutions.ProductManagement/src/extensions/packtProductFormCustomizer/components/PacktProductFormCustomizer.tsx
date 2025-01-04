@@ -43,6 +43,95 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
 
   private _colourOptions: string[] = ['Red', 'Blue', 'Green', 'Black', 'White'];
 
+  private _onModelNameChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.modelName = newValue || '';
+    this.setState({
+      product: product
+    });
+  }
+
+  private _onRetailPriceChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.retailPrice = parseFloat(newValue || '0');
+    this.setState({
+      product: product
+    });
+  }
+
+  private _onStockLevelChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.stockLevel = parseInt(newValue || '0');
+    this.setState({
+      product: product
+    });
+  }
+
+  // covert text to date
+  private _onLastOrderDateChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.lastOrderDate = new Date(newValue || '');
+    this.setState({
+      product: product
+    });
+  }
+
+  private _onItemPictureChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.itemPicture = newValue || '';
+    this.setState({
+      product: product
+    });
+  }
+
+  private _onItemColourChange = (colour: string): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.itemColour = colour;
+    this.setState({
+      product: product
+    });
+  }
+
+  private _onSizeChange = (event: React.FormEvent<HTMLDivElement>, option?: IChoiceGroupOption, index?: number): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.size = option ? ProductSizes[option.key as keyof typeof ProductSizes] : ProductSizes.M;
+    this.setState({
+      product: product
+    });
+  }
+
+  private _onProductReferenceChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string): void => {
+    const product = this.state.product;
+    if (product === null) {
+      return;
+    }
+    product.productReference = newValue || '';
+    this.setState({
+      product: product
+    });
+  }
+
   public componentDidMount(): void {
     if (this.props.displayMode === FormDisplayMode.New) {
       this.setState({
@@ -97,16 +186,17 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
 
     return (
       <div className={styles.packtProductFormCustomizer}>
-        <TextField label="Model Name" value={this.state.product?.modelName} />
-        <TextField label="Retail Price" value={this.state.product?.retailPrice.toString()} />
-        <TextField label="Stock Level" value={this.state.product?.stockLevel.toString()} />
-        <TextField label="Item Picture" value={this.state.product?.itemPicture} />
+        <TextField label="Model Name" value={this.state.product?.modelName} onChange={this._onModelNameChange.bind(this)} />
+        <TextField label="Retail Price" value={this.state.product?.retailPrice.toString()} onChange={this._onRetailPriceChange.bind(this)} />
+        <TextField label="Stock Level" value={this.state.product?.stockLevel.toString()} onChange={this._onStockLevelChange.bind(this)} />
+        <TextField label="Item Picture" value={this.state.product?.itemPicture} onChange={this._onItemPictureChange.bind(this)} />
         <div>
           <Label>Item Colour</Label>
           <div className={styles.productColourContainer}>
             {this._colourOptions.map(colour => (
               <div
                 key={colour}
+                onClick={() => this._onItemColourChange(colour)}
                 style={{
                   width: '30px',
                   height: '30px',
@@ -122,9 +212,10 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
           label="Size"
           selectedKey={this.state.product?.size}
           options={this._sizeOptions}
+          onChange={this._onSizeChange.bind(this)}
         />
-        <TextField label="Product Reference" value={this.state.product?.productReference} />
-        <TextField label="Last Order Date" value={this.state.product?.lastOrderDate?.toDateString()} />
+        <TextField label="Product Reference" value={this.state.product?.productReference} onChange={this._onProductReferenceChange.bind(this)} />
+        <TextField label="Last Order Date" value={this.state.product?.lastOrderDate?.toDateString()} onChange={this._onLastOrderDateChange.bind(this)} />
         <PrimaryButton text="Save" />
         <DefaultButton text="Cancel" />
       </div>
