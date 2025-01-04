@@ -25,7 +25,9 @@
     "@microsoft/sp-http": "1.19.0",
     "@microsoft/sp-image-helper": "1.19.0",
     "@microsoft/sp-office-ui-fabric-core": "1.19.0",
-    "@microsoft/sp-dynamic-data": "1.19.0"
+    "@microsoft/sp-dynamic-data": "1.19.0",
+    "@microsoft/decorators": "1.19.0",
+    "@microsoft/sp-listview-extensibility": "1.19.0"
   },
   "devDependencies": {
     "@microsoft/rush-stack-compiler-4.7": "0.1.0",

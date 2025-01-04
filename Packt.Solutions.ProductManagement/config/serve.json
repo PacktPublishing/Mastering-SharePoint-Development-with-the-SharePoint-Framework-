@@ -2,5 +2,45 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://{tenantDomain}/_layouts/workbench.aspx"
+  "initialPage": "https://{tenantDomain}/_layouts/workbench.aspx",
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://{tenantDomain}/_layouts/workbench.aspx"
+    },
+    "packtProductFormCustomizer_NewForm": {
+      "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "f6ec214d-9520-48a8-86c6-806c6898e10f",
+        "PageType": 8,
+        "RootFolder": "/sites/Packt/Lists/Products",
+        "properties": {
+          "sampleText": "Value"
+        }
+      }
+    },
+    "packtProductFormCustomizer_EditForm": {
+      "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "f6ec214d-9520-48a8-86c6-806c6898e10f",
+        "PageType": 6,
+        "RootFolder": "/sites/mySite/Lists/MyList",
+        "ID": 1,
+        "properties": {
+          "sampleText": "Value"
+        }
+      }
+    },
+    "packtProductFormCustomizer_ViewForm": {
+      "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "f6ec214d-9520-48a8-86c6-806c6898e10f",
+        "PageType": 4,
+        "RootFolder": "/sites/mySite/Lists/MyList",
+        "ID": 1,
+        "properties": {
+          "sampleText": "Value"
+        }
+      }
+    }
+  }
 }
