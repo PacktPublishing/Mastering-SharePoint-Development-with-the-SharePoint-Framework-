@@ -3,7 +3,7 @@ import { Log, FormDisplayMode } from '@microsoft/sp-core-library';
 
 import styles from './PacktProductFormCustomizer.module.scss';
 import { IPacktProductFormCustomizerState } from './IPacktProductFormCustomizerState';
-import { ProductSizes } from '../../../models/IProductCatalogItem';
+import { IProductCatalogItem, ProductSizes } from '../../../models/IProductCatalogItem';
 
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Label } from '@fluentui/react/lib/Label';
@@ -135,6 +135,50 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
     });
   }
 
+  private _createProduct = (product: IProductCatalogItem): Promise<void> => {
+    return this.props.productCatalogService.createProduct(this.props.siteId, this.props.listName, product)
+  }
+
+  private _updateProduct = (product: IProductCatalogItem): Promise<void> => {
+    return this.props.productCatalogService.updateProduct(this.props.siteId, this.props.listName, this.props.itemId, product)
+  }
+
+  private _onSave = (): void => {
+    if (this.state.product === null) {
+      return;
+    }
+
+    if (this.props.displayMode === FormDisplayMode.New) {
+      this._createProduct(this.state.product)
+        .then(() => {
+          if (!DEBUG) {
+            this.props.onSave();
+          } else {
+            alert("Product created successfully");
+          }
+        })
+        .catch((error: string) => {
+          this.setState({
+            error: error
+          });
+        });
+    } else {
+      this._updateProduct(this.state.product)
+        .then(() => {
+          if (!DEBUG) {
+            this.props.onSave();
+          } else {
+            alert("Product updated successfully");
+          }
+        })
+        .catch((error: string) => {
+          this.setState({
+            error: error
+          });
+        });
+    }
+  }
+
   public componentDidMount(): void {
     if (this.props.displayMode === FormDisplayMode.New) {
       this.setState({
@@ -212,14 +256,14 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
         </div>
         <ChoiceGroup
           label="Size"
-          selectedKey={ProductSizes[ProductSizes[this.state.product?.size ?? ProductSizes.M] as keyof typeof ProductSizes]}
+          selectedKey={ProductSizes[this.state.product?.size ?? ProductSizes.M] as keyof typeof ProductSizes}
           options={this._sizeOptions}
           onChange={this._onSizeChange.bind(this)}
         />
         <TextField label="Product Reference" value={this.state.product?.productReference} onChange={this._onProductReferenceChange.bind(this)} />
         <TextField label="Last Order Date" value={this.state.product?.lastOrderDate?.toDateString()} onChange={this._onLastOrderDateChange.bind(this)} />
-        <PrimaryButton text="Save" />
-        <DefaultButton text="Cancel" />
+        <PrimaryButton text="Save" onClick={this._onSave.bind(this)} />
+        <DefaultButton text="Cancel" onClick={this.props.onClose} />
       </div>
     );
 

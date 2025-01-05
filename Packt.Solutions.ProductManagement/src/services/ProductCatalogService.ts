@@ -86,7 +86,7 @@ export class ProductCatalogService implements IProductCatalogService {
           : null,
         productReference: response.fields.packtProductReference,
         stockLevel: response.fields.packtProductStockLevel,
-        size: response.fields.packtProductSize as ProductSizes,
+        size: ProductSizes[response.fields.packtProductSize as keyof typeof ProductSizes],
         retailPrice: response.fields.packtProductRetailPrice,
         itemColour: response.fields.packtProductColor,
         itemPicture: response.fields.packtProductItemPicture
@@ -109,13 +109,13 @@ export class ProductCatalogService implements IProductCatalogService {
   ): Promise<void> {
     try {
       await this._msGraphClient
-        .api(`sites/${siteId}/lists/${listName}/items/${productId}`)
-        .patch({
+        .api(`sites/${siteId}/lists/${listName}/items/${productId}/fields`)
+        .update({
           packtProductModelName: product.modelName,
           packtProductStockLastOrderDate: product.lastOrderDate,
           packtProductReference: product.productReference,
           packtProductStockLevel: product.stockLevel,
-          packtProductSize: product.size,
+          packtProductSize: ProductSizes[product.size],
           packtProductRetailPrice: product.retailPrice,
           packtProductColor: product.itemColour,
           packtProductItemPicture: product.itemPicture
