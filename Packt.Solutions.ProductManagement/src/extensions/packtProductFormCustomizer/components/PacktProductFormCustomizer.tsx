@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Log, FormDisplayMode } from '@microsoft/sp-core-library';
-import { FormCustomizerContext } from '@microsoft/sp-listview-extensibility';
 
 import styles from './PacktProductFormCustomizer.module.scss';
 import { IPacktProductFormCustomizerState } from './IPacktProductFormCustomizerState';
@@ -10,10 +9,14 @@ import { TextField } from '@fluentui/react/lib/TextField';
 import { Label } from '@fluentui/react/lib/Label';
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup';
 import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
+import { IProductCatalogService } from '../../../services/IProductCatalogService';
 
 
 export interface IPacktProductFormCustomizerProps {
-  context: FormCustomizerContext;
+  productCatalogService: IProductCatalogService;
+  siteId: string;
+  listName: string;
+  itemId: string;
   displayMode: FormDisplayMode;
   onSave: () => void;
   onClose: () => void;
@@ -149,19 +152,18 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
       return;
     }
 
-    // if we are in edit mode or display mode, we load static data
-    this.setState({
-      product: {
-        modelName: 'Packt Product',
-        retailPrice: 100,
-        stockLevel: 10,
-        lastOrderDate: new Date(),
-        itemPicture: '',
-        itemColour: 'Red',
-        size: ProductSizes.M,
-        productReference: 'ABC123'
-      }
-    });
+    // load item to display on the form
+    this.props.productCatalogService.getProductById(this.props.siteId, this.props.listName, this.props.itemId)
+      .then((product) => {
+        this.setState({
+          product: product
+        });
+      })
+      .catch((error: string) => {
+        this.setState({
+          error: error
+        });
+      });
   }
 
   public componentWillUnmount(): void {
@@ -210,7 +212,7 @@ export default class PacktProductFormCustomizer extends React.Component<IPacktPr
         </div>
         <ChoiceGroup
           label="Size"
-          selectedKey={this.state.product?.size}
+          selectedKey={ProductSizes[ProductSizes[this.state.product?.size ?? ProductSizes.M] as keyof typeof ProductSizes]}
           options={this._sizeOptions}
           onChange={this._onSizeChange.bind(this)}
         />

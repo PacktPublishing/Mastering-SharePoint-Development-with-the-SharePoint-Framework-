@@ -66,5 +66,94 @@ export class ProductCatalogService implements IProductCatalogService {
       Log.error("ProductCatalogService", error);
       return [];
     }
-  }  
+  }
+  
+  // get product by id
+  public async getProductById(
+    siteId: string,
+    listName: string,
+    productId: string
+  ): Promise<IProductCatalogItem | null> {
+    try {
+      const response = await this._msGraphClient
+        .api(`sites/${siteId}/lists/${listName}/items/${productId}`)
+        .get();
+
+      return {
+        modelName: response.fields.packtProductModelName,
+        lastOrderDate: response.fields.packtProductStockLastOrderDate
+          ? new Date(response.fields.packtProductStockLastOrderDate)
+          : null,
+        productReference: response.fields.packtProductReference,
+        stockLevel: response.fields.packtProductStockLevel,
+        size: response.fields.packtProductSize as ProductSizes,
+        retailPrice: response.fields.packtProductRetailPrice,
+        itemColour: response.fields.packtProductColor,
+        itemPicture: response.fields.packtProductItemPicture
+          ? JSON.parse(response.fields.packtProductItemPicture).serverRelativeUrl
+          : null,
+      } as IProductCatalogItem;
+
+    } catch (error) {
+      Log.error("ProductCatalogService", error);
+      return null;
+    }
+  }
+
+  // update product
+  public async updateProduct(
+    siteId: string,
+    listName: string,
+    productId: string,
+    product: IProductCatalogItem
+  ): Promise<void> {
+    try {
+      await this._msGraphClient
+        .api(`sites/${siteId}/lists/${listName}/items/${productId}`)
+        .patch({
+          packtProductModelName: product.modelName,
+          packtProductStockLastOrderDate: product.lastOrderDate,
+          packtProductReference: product.productReference,
+          packtProductStockLevel: product.stockLevel,
+          packtProductSize: product.size,
+          packtProductRetailPrice: product.retailPrice,
+          packtProductColor: product.itemColour,
+          packtProductItemPicture: product.itemPicture
+            ? JSON.stringify({ serverRelativeUrl: product.itemPicture })
+            : null,
+        });
+
+    } catch (error) {
+      Log.error("ProductCatalogService", error);
+    }
+  }
+
+  // create product
+  public async createProduct(
+    siteId: string,
+    listName: string,
+    product: IProductCatalogItem
+  ): Promise<void> {
+    try {
+      await this._msGraphClient
+        .api(`sites/${siteId}/lists/${listName}/items`)
+        .post({
+          "fields": {
+            "packtProductModelName": product.modelName,
+            "packtProductStockLastOrderDate": product.lastOrderDate,
+            "packtProductReference": product.productReference,
+            "packtProductStockLevel": product.stockLevel,
+            "packtProductSize": ProductSizes[product.size],
+            "packtProductRetailPrice": product.retailPrice,
+            "packtProductColor": product.itemColour,
+            "packtProductItemPicture": product.itemPicture
+              ? JSON.stringify({ serverRelativeUrl: product.itemPicture })
+              : null,
+          }
+        });
+
+    } catch (error) {
+      Log.error("ProductCatalogService", error);
+    }
+  }
 }

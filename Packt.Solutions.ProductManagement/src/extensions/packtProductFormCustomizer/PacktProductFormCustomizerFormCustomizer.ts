@@ -7,6 +7,9 @@ import {
 } from '@microsoft/sp-listview-extensibility';
 
 import PacktProductFormCustomizer, { IPacktProductFormCustomizerProps } from './components/PacktProductFormCustomizer';
+import { MSGraphClientV3 } from '@microsoft/sp-http';
+import { IProductCatalogService } from '../../services/IProductCatalogService';
+import { ProductCatalogService } from '../../services/ProductCatalogService';
 
 /**
  * If your form customizer uses the ClientSideComponentProperties JSON input,
@@ -23,11 +26,21 @@ const LOG_SOURCE: string = 'PacktProductFormCustomizerFormCustomizer';
 export default class PacktProductFormCustomizerFormCustomizer
   extends BaseFormCustomizer<IPacktProductFormCustomizerFormCustomizerProperties> {
 
-  public onInit(): Promise<void> {
+  private _productCatalogService: IProductCatalogService;
+  private _msGraphClient: MSGraphClientV3;
+
+  public async onInit(): Promise<void> {
     // Add your custom initialization to this method. The framework will wait
     // for the returned promise to resolve before rendering the form.
     Log.info(LOG_SOURCE, 'Activated PacktProductFormCustomizerFormCustomizer with properties:');
     Log.info(LOG_SOURCE, JSON.stringify(this.properties, undefined, 2));
+
+    this._msGraphClient = await this.context.msGraphClientFactory.getClient(
+      "3"
+    );
+
+    this._productCatalogService = new ProductCatalogService(this._msGraphClient);
+
     return Promise.resolve();
   }
 
@@ -36,11 +49,14 @@ export default class PacktProductFormCustomizerFormCustomizer
 
     const packtProductFormCustomizer: React.ReactElement<{}> =
       React.createElement(PacktProductFormCustomizer, {
-        context: this.context,
+        productCatalogService: this._productCatalogService,
+        siteId: this.context.pageContext.site.id.toString(),
+        listName: this.context.list.title,
+        itemId: this.context.itemId ? this.context.itemId.toString() : null,
         displayMode: this.displayMode,
         onSave: this._onSave,
         onClose: this._onClose
-       } as IPacktProductFormCustomizerProps);
+      } as IPacktProductFormCustomizerProps);
 
     ReactDOM.render(packtProductFormCustomizer, this.domElement);
   }
@@ -57,7 +73,7 @@ export default class PacktProductFormCustomizerFormCustomizer
     this.formSaved();
   }
 
-  private _onClose =  (): void => {
+  private _onClose = (): void => {
     // You MUST call this.formClosed() after you close the form.
     this.formClosed();
   }
