@@ -17,7 +17,8 @@ export class ProductCatalogService implements IProductCatalogService {
     siteId: string,
     listName: string,
     itemsCount?: number,
-    searchQuery?: string
+    searchQuery?: string,
+    filter?: string
   ): Promise<IProductCatalogItem[]> {
 
     // SharePoint columns for a product
@@ -36,7 +37,7 @@ export class ProductCatalogService implements IProductCatalogService {
 
       const response = await this._msGraphClient
         .api(`sites/${siteId}/lists/${listName}/items`)
-        .filter(searchQuery ? `startswith(fields/packtProductModelName, '${searchQuery}') or startswith(fields/packtProductColor, '${searchQuery}') or startswith(fields/packtProductSize, '${searchQuery}')` : '')
+        .filter(searchQuery ? `startswith(fields/packtProductModelName, '${searchQuery}') or startswith(fields/packtProductColor, '${searchQuery}') or startswith(fields/packtProductSize, '${searchQuery}')` : filter ? filter : '')
         .expand(`fields($select=${fields})`)
         .top(itemsCount ? itemsCount : 50)
         .header("Prefer", "HonorNonIndexedQueriesWarningMayFailRandomly")
@@ -156,4 +157,27 @@ export class ProductCatalogService implements IProductCatalogService {
       Log.error("ProductCatalogService", error);
     }
   }
+
+  // get low stock products
+  public async getLowStockProducts(
+    siteId: string,
+    listName: string,
+    lowStockThreshold?: number,
+    itemsCount?: number
+  ): Promise<IProductCatalogItem[]> {
+    try {
+      return this.getProducts(
+        siteId,
+        listName,
+        itemsCount,
+        undefined,
+        `fields/packtProductStockLevel lt ${lowStockThreshold ? lowStockThreshold : 10}`
+      );
+
+    } catch (error) {
+      Log.error("ProductCatalogService", error);
+      return [];
+    }
+  }
+
 }

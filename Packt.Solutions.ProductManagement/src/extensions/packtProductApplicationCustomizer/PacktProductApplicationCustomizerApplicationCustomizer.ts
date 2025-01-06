@@ -10,6 +10,9 @@ import {
 import * as strings from 'PacktProductApplicationCustomizerApplicationCustomizerStrings';
 import { ILowStockInformerProps } from "./components/ILowStockInformerProps";
 import LowStockInformer from "./components/LowStockInformer";
+import { IProductCatalogService } from "../../services/IProductCatalogService";
+import { MSGraphClientV3 } from "@microsoft/sp-http";
+import { ProductCatalogService } from "../../services/ProductCatalogService";
 
 const LOG_SOURCE: string = 'PacktProductApplicationCustomizerApplicationCustomizer';
 
@@ -20,7 +23,7 @@ const LOG_SOURCE: string = 'PacktProductApplicationCustomizerApplicationCustomiz
  */
 export interface IPacktProductApplicationCustomizerApplicationCustomizerProperties {
   // This is an example; replace with your own property
-  testMessage: string;
+  productsListName: string;
 }
 
 /** A Custom Action which can be run during execution of a Client Side Application */
@@ -28,9 +31,17 @@ export default class PacktProductApplicationCustomizerApplicationCustomizer
   extends BaseApplicationCustomizer<IPacktProductApplicationCustomizerApplicationCustomizerProperties> {
 
   private _topPlaceholder: PlaceholderContent | undefined;
+  private _productCatalogService: IProductCatalogService;
+  private _msGraphClient: MSGraphClientV3;
 
-  public onInit(): Promise<void> {
+  public async onInit(): Promise<void> {
     Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);
+
+    this._msGraphClient = await this.context.msGraphClientFactory.getClient(
+      "3"
+    );
+
+    this._productCatalogService = new ProductCatalogService(this._msGraphClient);
 
     // Wait for the placeholders to be created (or handle them being changed) and then
     // render.
@@ -55,9 +66,15 @@ export default class PacktProductApplicationCustomizerApplicationCustomizer
     }
 
     if (this._topPlaceholder.domElement) {
+      const listName = this.properties.productsListName ? this.properties.productsListName : "Products";
       const lowStockInformer: React.ReactElement<ILowStockInformerProps> = React.createElement(
         LowStockInformer,
-        {}
+        {
+          productCatalogService: this._productCatalogService,
+          siteId: this.context.pageContext.site.id.toString(),
+          listName: listName,
+          listUrl: `${this.context.pageContext.site.serverRelativeUrl}/Lists/${listName}`
+        }
       );
       ReactDOM.render(lowStockInformer, this._topPlaceholder.domElement);
     }

@@ -55,7 +55,7 @@
         "4e17bd75-a16f-46ec-844c-1283b68eaad3": {
           "location": "ClientSideExtension.ApplicationCustomizer",
           "properties": {
-            "testMessage": "Test message"
+            "productsListName": "Products"
           }
         }
       }
