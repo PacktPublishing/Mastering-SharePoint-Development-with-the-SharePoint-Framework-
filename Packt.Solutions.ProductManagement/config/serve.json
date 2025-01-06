@@ -41,6 +41,17 @@
           "sampleText": "Value"
         }
       }
+    },
+    "packtProductApplicationCustomizer": {
+      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "customActions": {
+        "dec4a2b3-564c-430e-b968-70096ca19d6a": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
     }
   }
 }

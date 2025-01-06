@@ -25,12 +25,21 @@
           "manifest": "./src/extensions/packtProductFormCustomizer/PacktProductFormCustomizerFormCustomizer.manifest.json"
         }
       ]
+    },
+    "packt-product-application-customizer-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/packtProductApplicationCustomizer/PacktProductApplicationCustomizerApplicationCustomizer.js",
+          "manifest": "./src/extensions/packtProductApplicationCustomizer/PacktProductApplicationCustomizerApplicationCustomizer.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "PackProductCatalogWebPartStrings": "lib/webparts/packProductCatalog/loc/{locale}.js",
     "PacktProductSearchBoxWebPartStrings": "lib/webparts/packtProductSearchBox/loc/{locale}.js",
-    "PacktProductFormCustomizerFormCustomizerStrings": "lib/extensions/packtProductFormCustomizer/loc/{locale}.js"
+    "PacktProductFormCustomizerFormCustomizerStrings": "lib/extensions/packtProductFormCustomizer/loc/{locale}.js",
+    "PacktProductApplicationCustomizerApplicationCustomizerStrings": "lib/extensions/packtProductApplicationCustomizer/loc/{locale}.js"
   }
 }

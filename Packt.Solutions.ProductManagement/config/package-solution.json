@@ -30,7 +30,13 @@
         "title": "packt-solutions-product-management Feature",
         "description": "The feature that activates elements of the packt-solutions-product-management solution.",
         "id": "00b84497-b64c-47e6-b787-fc70a19431ed",
-        "version": "1.0.0.0"
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": [
+            "elements.xml",
+            "ClientSideInstance.xml"
+          ]
+        }
       }
     ]
   },
