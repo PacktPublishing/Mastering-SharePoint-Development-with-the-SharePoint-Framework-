@@ -143,7 +143,7 @@ export class ProductCatalogService implements IProductCatalogService {
             "packtProductStockLastOrderDate": product.lastOrderDate,
             "packtProductReference": product.productReference,
             "packtProductStockLevel": product.stockLevel,
-            "packtProductSize": product.size,
+            "packtProductSize": ProductSizes[product.size],
             "packtProductRetailPrice": product.retailPrice,
             "packtProductColor": product.itemColour,
             "packtProductItemPicture": product.itemPicture
