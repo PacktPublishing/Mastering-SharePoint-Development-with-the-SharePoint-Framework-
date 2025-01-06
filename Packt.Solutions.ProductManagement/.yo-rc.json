@@ -6,8 +6,8 @@
     "packageManager": "npm",
     "skipFeatureDeployment": true,
     "componentType": "extension",
-    "template": "react",
-    "componentName": "PacktProductFormCustomizer",
+    "template": "none",
+    "componentName": "PacktProductApplicationCustomizer",
     "plusBeta": false,
     "isCreatingSolution": false,
     "nodeVersion": "18.20.4",
@@ -20,6 +20,6 @@
     "libraryId": "598b2a34-cb28-4231-8c70-5a07a02bf6dd",
     "solutionShortDescription": "Packt.Solutions.ProductManagement description",
     "isDomainIsolated": false,
-    "extensionType": "FormCustomizer"
+    "extensionType": "ApplicationCustomizer"
   }
 }
