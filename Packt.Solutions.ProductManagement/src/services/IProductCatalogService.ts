@@ -5,4 +5,5 @@ export interface IProductCatalogService {
   getProductById(siteId: string, listName: string, productId: string): Promise<IProductCatalogItem | null>;
   updateProduct(siteId: string, listName: string, productId: string, product: IProductCatalogItem): Promise<void>;
   createProduct(siteId: string, listName: string, product: IProductCatalogItem): Promise<void>;
+  getLowStockProducts(siteId: string, listName: string, lowStockThreshold?: number, itemsCount?: number): Promise<IProductCatalogItem[]>;
 }

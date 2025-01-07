@@ -12,12 +12,13 @@ export class ProductCatalogService implements IProductCatalogService {
   constructor(msGraphClient: MSGraphClientV3) {
     this._msGraphClient = msGraphClient;
   }
-  
+
   public async getProducts(
     siteId: string,
     listName: string,
     itemsCount?: number,
-    searchQuery?: string
+    searchQuery?: string,
+    filter?: string
   ): Promise<IProductCatalogItem[]> {
 
     // SharePoint columns for a product
@@ -33,10 +34,10 @@ export class ProductCatalogService implements IProductCatalogService {
     ];
 
     try {
-      
+
       const response = await this._msGraphClient
         .api(`sites/${siteId}/lists/${listName}/items`)
-        .filter(searchQuery ? `startswith(fields/packtProductModelName, '${searchQuery}') or startswith(fields/packtProductColor, '${searchQuery}') or startswith(fields/packtProductSize, '${searchQuery}')`:'')
+        .filter(searchQuery ? `startswith(fields/packtProductModelName, '${searchQuery}') or startswith(fields/packtProductColor, '${searchQuery}') or startswith(fields/packtProductSize, '${searchQuery}')` : filter ? filter : '')
         .expand(`fields($select=${fields})`)
         .top(itemsCount ? itemsCount : 50)
         .header("Prefer", "HonorNonIndexedQueriesWarningMayFailRandomly")
@@ -67,7 +68,7 @@ export class ProductCatalogService implements IProductCatalogService {
       return [];
     }
   }
-  
+
   // get product by id
   public async getProductById(
     siteId: string,
@@ -154,6 +155,28 @@ export class ProductCatalogService implements IProductCatalogService {
 
     } catch (error) {
       Log.error("ProductCatalogService", error);
+    }
+  }
+
+  // get low stock products
+  public async getLowStockProducts(
+    siteId: string,
+    listName: string,
+    lowStockThreshold?: number,
+    itemsCount?: number
+  ): Promise<IProductCatalogItem[]> {
+    try {
+      return this.getProducts(
+        siteId,
+        listName,
+        itemsCount,
+        undefined,
+        `fields/packtProductStockLevel lt ${lowStockThreshold ? lowStockThreshold : 10}`
+      );
+
+    } catch (error) {
+      Log.error("ProductCatalogService", error);
+      return [];
     }
   }
 }
