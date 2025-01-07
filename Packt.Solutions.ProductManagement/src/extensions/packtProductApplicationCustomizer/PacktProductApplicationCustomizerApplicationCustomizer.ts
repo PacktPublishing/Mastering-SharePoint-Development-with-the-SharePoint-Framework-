@@ -1,3 +1,5 @@
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { Log } from '@microsoft/sp-core-library';
 import {
   BaseApplicationCustomizer,
@@ -6,7 +8,9 @@ import {
 } from '@microsoft/sp-application-base';
 
 import * as strings from 'PacktProductApplicationCustomizerApplicationCustomizerStrings';
-import styles from './PacktProductApplicationCustomizerApplicationCustomizer.module.scss';
+
+import { ILowStockInformerProps } from "./components/ILowStockInformerProps";
+import LowStockInformer from "./components/LowStockInformer";
 
 const LOG_SOURCE: string = 'PacktProductApplicationCustomizerApplicationCustomizer';
 
@@ -52,10 +56,11 @@ export default class PacktProductApplicationCustomizerApplicationCustomizer
     }
 
     if (this._topPlaceholder.domElement) {
-      this._topPlaceholder.domElement.innerHTML = `
-      <div class="${styles.applicationCustomizer}">
-        <p class="${styles.topPlaceHolder}">This is the Packt Product Management Application Customizer</p>
-      </div>`;
+      const lowStockInformer: React.ReactElement<ILowStockInformerProps> = React.createElement(
+        LowStockInformer,
+        {}
+      );
+      ReactDOM.render(lowStockInformer, this._topPlaceholder.domElement);
     }
   }
 
