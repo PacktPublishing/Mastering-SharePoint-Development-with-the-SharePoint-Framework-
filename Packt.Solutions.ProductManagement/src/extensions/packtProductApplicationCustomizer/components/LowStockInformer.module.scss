@@ -5,8 +5,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: black;
-    color: white;
+    background-color: #fdf4cf;
+    color: #000;
     margin: 0px;
+    a {
+      color: #000;
+      text-decoration: none;
+    }
   }
 }
