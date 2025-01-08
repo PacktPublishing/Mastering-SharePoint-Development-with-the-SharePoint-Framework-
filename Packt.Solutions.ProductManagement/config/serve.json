@@ -59,6 +59,17 @@
           }
         }
       }
+    },
+    "packtProductFieldCustomizer": {
+      "pageUrl": "https://anoopccdev1.sharepoint.com/sites/Packt/Lists/Products/AllItems.aspx",
+      "fieldCustomizers": {
+        "packtProductStockLevel": {
+          "id": "fe5321a6-84a7-4638-9f4b-1b8c3d49506c",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
     }
   }
 }

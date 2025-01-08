@@ -1,0 +1,20 @@
+.packtProductFieldCustomizer {
+  .lowStockContentContainer {
+    background-color: #f8a392;
+    color: #000;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+  }
+  
+  .lowStockValue {
+    margin: 0 auto; /* Push this item to the center */
+  }
+  
+  .lowStockWarningIcon {
+    margin-right: 5px; /* Push this item to the right end */
+  }
+  
+}
