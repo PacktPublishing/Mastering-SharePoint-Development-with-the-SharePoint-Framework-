@@ -13,8 +13,7 @@ import styles from './PacktProductFieldCustomizerFieldCustomizer.module.scss';
  * You can define an interface to describe it.
  */
 export interface IPacktProductFieldCustomizerFieldCustomizerProperties {
-  // This is an example; replace with your own property
-  sampleText?: string;
+  lowStockThreshold: number;
 }
 
 const LOG_SOURCE: string = 'PacktProductFieldCustomizerFieldCustomizer';
@@ -32,12 +31,19 @@ export default class PacktProductFieldCustomizerFieldCustomizer
   }
 
   public onRenderCell(event: IFieldCustomizerCellEventParameters): void {
-    // Use this method to perform your custom cell rendering.
-    const text: string = `${this.properties.sampleText}: ${event.fieldValue}`;
-
-    event.domElement.innerText = text;
-
     event.domElement.classList.add(styles.packtProductFieldCustomizer);
+    const text: string = `${event.fieldValue}`;
+    let value: number = parseInt(event.fieldValue);
+    const lowStockThreshold: number = this.properties.lowStockThreshold || 10;
+    if (value < lowStockThreshold) {
+      event.domElement.innerHTML = `
+        <div class='${styles.lowStockContentContainer}'>
+          <div class='${styles.lowStockValue}'>${text}</div> 
+          <div class='${styles.lowStockWarningIcon}'>&#9888;</div>
+        </div>`;
+      return;
+    }
+    event.domElement.innerText = text;
   }
 
   public onDisposeCell(event: IFieldCustomizerCellEventParameters): void {
