@@ -20,6 +20,7 @@ import * as PackProductCatalogStrings from "PackProductCatalogWebPartStrings";
 import * as strings from 'PackProductCatalogWebPartStrings';
 import { PropertyPaneAsyncListPicker } from '../../controls/PropertyPaneAsyncListPicker/PropertyPaneAsyncListPicker';
 import { MSGraphClientV3 } from '@microsoft/sp-http';
+import { ISPFXContext, spfi, SPFx as spSPFx } from "@pnp/sp";
 
 export interface IPackProductCatalogWebPartProps {
   productsListName: string;
@@ -59,8 +60,10 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
     this._msGraphClient = await this.context.msGraphClientFactory.getClient(
       "3"
     );
+
+    const sp = spfi().using(spSPFx(this.context as ISPFXContext));
     
-    this._productCatalogService = new ProductCatalogService(this._msGraphClient);
+    this._productCatalogService = new ProductCatalogService(sp);
 
     this._runInTeams = await !!this.context.sdks.microsoftTeams?.teamsJs.app.getContext()
  

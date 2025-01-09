@@ -1,23 +1,24 @@
 import { Log } from "@microsoft/sp-core-library";
 import {
   IProductCatalogItem,
-  ProductSizes,
+  ProductSizes
 } from "../models/IProductCatalogItem";
 import { IProductCatalogService } from "./IProductCatalogService";
-import { MSGraphClientV3 } from "@microsoft/sp-http";
+import { SPFI } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 export class ProductCatalogService implements IProductCatalogService {
-  private _msGraphClient: MSGraphClientV3;
+  private _sp: SPFI;
 
-  constructor(msGraphClient: MSGraphClientV3) {
-    this._msGraphClient = msGraphClient;
+  constructor(sp: SPFI) {
+    this._sp = sp;
   }
   
   public async getProducts(
-    siteId: string,
     listName: string,
     itemsCount?: number,
-    searchQuery?: string
   ): Promise<IProductCatalogItem[]> {
 
     // SharePoint columns for a product
@@ -33,29 +34,26 @@ export class ProductCatalogService implements IProductCatalogService {
     ];
 
     try {
-      
-      const response = await this._msGraphClient
-        .api(`sites/${siteId}/lists/${listName}/items`)
-        .filter(searchQuery ? `startswith(fields/packtProductModelName, '${searchQuery}') or startswith(fields/packtProductColor, '${searchQuery}') or startswith(fields/packtProductSize, '${searchQuery}')`:'')
-        .expand(`fields($select=${fields})`)
-        .top(itemsCount ? itemsCount : 50)
-        .header("Prefer", "HonorNonIndexedQueriesWarningMayFailRandomly")
-        .get();
+
+      let items: IProductCatalogItem[] = await this._sp.web.lists
+                                      .getByTitle(listName).items
+                                      .select(...fields)
+                                      .top(itemsCount ? itemsCount : 50)();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const items: IProductCatalogItem[] = response.value.map((item: any) => {
+      items = items.map((item: any) => {
         return {
-          modelName: item.fields.packtProductModelName,
-          lastOrderDate: item.fields.packtProductStockLastOrderDate
-            ? new Date(item.fields.packtProductStockLastOrderDate)
+          modelName: item.packtProductModelName,
+          lastOrderDate: item.packtProductStockLastOrderDate
+            ? new Date(item.packtProductStockLastOrderDate)
             : null,
-          productReference: item.fields.packtProductReference,
-          stockLevel: item.fields.packtProductStockLevel,
-          size: item.fields.packtProductSize as ProductSizes,
-          retailPrice: item.fields.packtProductRetailPrice,
-          itemColour: item.fields.packtProductColor,
-          itemPicture: item.fields.packtProductItemPicture
-            ? JSON.parse(item.fields.packtProductItemPicture).serverRelativeUrl
+          productReference: item.packtProductReference,
+          stockLevel: item.packtProductStockLevel,
+          size: item.fields as ProductSizes,
+          retailPrice: item.packtProductRetailPrice,
+          itemColour: item.packtProductColor,
+          itemPicture: item.packtProductItemPicture
+            ? JSON.parse(item.packtProductItemPicture).serverRelativeUrl
             : null,
         } as IProductCatalogItem;
       });
