@@ -48,7 +48,18 @@
         "dec4a2b3-564c-430e-b968-70096ca19d6a": {
           "location": "ClientSideExtension.ApplicationCustomizer",
           "properties": {
-             "productsListName": "Products"
+            "productsListName": "Products"
+          }
+        }
+      }
+    },
+    "packtProductFieldCustomizer": {
+      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "fieldCustomizers": {
+        "InternalFieldName": {
+          "id": "2824bbec-56b9-4d95-acd3-3ac0e961e5cb",
+          "properties": {
+            "sampleText": "Value"
           }
         }
       }
