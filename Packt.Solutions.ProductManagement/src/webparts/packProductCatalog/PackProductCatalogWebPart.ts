@@ -2,10 +2,9 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Guid, Version } from '@microsoft/sp-core-library';
 import {
+  IPropertyPaneField,
   PropertyPaneDynamicField,
   PropertyPaneHorizontalRule,
-  PropertyPaneSlider,
-  PropertyPaneTextField,
   PropertyPaneToggle,
   type IPropertyPaneConfiguration,
 } from '@microsoft/sp-property-pane';
@@ -21,6 +20,7 @@ import * as strings from 'PackProductCatalogWebPartStrings';
 import { PropertyPaneAsyncListPicker } from '../../controls/PropertyPaneAsyncListPicker/PropertyPaneAsyncListPicker';
 import { MSGraphClientV3 } from '@microsoft/sp-http';
 import { ISPFXContext, spfi, SPFx as spSPFx } from "@pnp/sp";
+import { PropertyFieldSpinButton } from '@pnp/spfx-property-controls/lib/PropertyFieldSpinButton';
 
 export interface IPackProductCatalogWebPartProps {
   productsListName: string;
@@ -164,23 +164,21 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
 
-    const groupFields = [
-      PropertyPaneSlider("itemsCount", { 
-        min: 1,
+    const groupFields: IPropertyPaneField<any>[] = [
+      /* Property field coming from the @pnp/spfx-property-controls library */
+      PropertyFieldSpinButton('itemsCount', {
+        label: strings.PropertyPane.ItemsCountFieldLabel,
+        initialValue: this.properties.itemsCount,
+        onPropertyChange: this.onPropertyPaneFieldChanged,
+        properties: this.properties,
+        disabled: false,
+        min: 0,
         max: 5,
-        label: strings.PropertyPane.ItemsCountFieldLabel,
-        showValue: true,
-        value: this.properties.itemsCount,
-        step: 1                
-      }),
-      PropertyPaneTextField("itemsCount", {
-        label: strings.PropertyPane.ItemsCountFieldLabel,
-        onGetErrorMessage: (value: string) => {
-          if (!/^\d+$/.test(value)) {
-            return "Value should be a number"
-          }
-          return "";
-        }
+        step: 1,
+        decimalPlaces: 0,
+        incrementIconName: 'CalculatorAddition',
+        decrementIconName: 'CalculatorSubtract',
+        key: 'spinButtonFieldId'
       }),
       new PropertyPaneAsyncListPicker("productsListName", {
         msGraphClient: this._msGraphClient,

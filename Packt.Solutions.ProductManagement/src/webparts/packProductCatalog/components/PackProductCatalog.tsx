@@ -4,9 +4,9 @@ import {
   IProductCatalogItem,
 } from "../../../models/IProductCatalogItem";
 import { IPacktProductCatalogState } from "./IPacktProductCatalogState";
-import styles from "./PackProductCatalog.module.scss";
-import { ImageHelper } from "@microsoft/sp-image-helper";
-import * as PackProductCatalogStrings from "PackProductCatalogWebPartStrings";
+import { GridLayout } from "@pnp/spfx-controls-react/lib/GridLayout";
+import { ISize } from "@fluentui/react/lib/Utilities";
+import { IDocumentCardPreviewProps, ImageFit, DocumentCard, DocumentCardType, DocumentCardPreview, DocumentCardLocation, DocumentCardDetails, DocumentCardTitle } from "@fluentui/react";
 
 export default class PackProductCatalog extends React.Component<
   IPackProductCatalogProps,
@@ -20,45 +20,45 @@ export default class PackProductCatalog extends React.Component<
     };
   }
 
+  
+ private _onRenderGridItem = (item: IProductCatalogItem, finalSize: ISize, isCompact: boolean): JSX.Element => {
+    const previewProps: IDocumentCardPreviewProps = {
+      previewImages: [
+        {
+          previewImageSrc: item.itemPicture,
+          imageFit: ImageFit.cover,
+          height: 130
+        }
+      ]
+    };
+
+    return <div
+      data-is-focusable={true}
+      role="listitem"
+      aria-label={item.modelName}
+    >
+      <DocumentCard
+        type={isCompact ? DocumentCardType.compact : DocumentCardType.normal}
+      >
+        <DocumentCardPreview {...previewProps} />
+        {!isCompact && <DocumentCardLocation location={item.productReference} />}
+        <DocumentCardDetails>
+          <DocumentCardTitle
+            title={item.modelName}
+            shouldTruncate={true}
+          />
+        </DocumentCardDetails>
+      </DocumentCard>
+    </div>;
+  }
+
   public render(): React.ReactElement<IPackProductCatalogProps> {
-    return (
-      <div className={styles.productList}>
-        {this.state.productItems.map((productItem: IProductCatalogItem) => {
-          return (
-            <div
-              className={styles.productItem}
-              style={{
-                backgroundImage: `url(${ImageHelper.convertToImageUrl({
-                  sourceUrl: productItem.itemPicture,
-                  width: 250,
-                })})`,
-              }}
-              key={productItem.productReference}
-            >
-              <div className={styles.productItemFooter}>
-                <div className={styles.tertiaryText}>
-                  <span>
-                    {PackProductCatalogStrings.Labels.Reference}: {productItem.productReference}
-                  </span>
-                </div>
-                <div className={styles.primaryText}>
-                  {productItem.modelName}
-                </div>
-                <div className={styles.secondaryText}>
-                  <span>
-                    {PackProductCatalogStrings.Labels.Size}: {productItem.size}
-                  </span>
-                  <span>
-                    {PackProductCatalogStrings.Labels.StockLevel}:{" "}
-                    {productItem.stockLevel}
-                  </span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
+
+    return  <GridLayout
+              ariaLabel="List of content, use right and left arrow keys to navigate, arrow down to access details."
+              items={this.state.productItems}
+              onRenderGridItem={(item: any, finalSize: ISize, isCompact: boolean) => this._onRenderGridItem(item, finalSize, isCompact)}
+            />
   }
   
   public async componentDidMount(): Promise<void> {
@@ -75,7 +75,7 @@ export default class PackProductCatalog extends React.Component<
   }
 
   private async getItems(): Promise<void> {
-    const productItems: IProductCatalogItem[] = await this.props.productCatalogService.getProducts(this.props.siteId, this.props.listName, this.props.itemsCount, this.props.searchQuery);
+    const productItems: IProductCatalogItem[] = await this.props.productCatalogService.getProducts(this.props.listName, this.props.itemsCount);
 
     this.setState({
       productItems: productItems,
