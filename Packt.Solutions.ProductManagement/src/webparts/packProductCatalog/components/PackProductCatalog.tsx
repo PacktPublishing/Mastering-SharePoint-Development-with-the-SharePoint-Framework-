@@ -19,9 +19,8 @@ export default class PackProductCatalog extends React.Component<
       productItems: [],
     };
   }
-
   
- private _onRenderGridItem = (item: IProductCatalogItem, finalSize: ISize, isCompact: boolean): JSX.Element => {
+  private _onRenderGridItem = (item: IProductCatalogItem, finalSize: ISize, isCompact: boolean): JSX.Element => {
     const previewProps: IDocumentCardPreviewProps = {
       previewImages: [
         {
