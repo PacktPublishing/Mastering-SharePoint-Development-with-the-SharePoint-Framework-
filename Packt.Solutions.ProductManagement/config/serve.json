@@ -63,6 +63,18 @@
           }
         }
       }
+    },
+    "packtProductListViewCommandSet": {
+      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "customActions": {
+        "2ba4a965-53bb-43d2-8dbc-55f7ae344a95": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
     }
   }
 }
