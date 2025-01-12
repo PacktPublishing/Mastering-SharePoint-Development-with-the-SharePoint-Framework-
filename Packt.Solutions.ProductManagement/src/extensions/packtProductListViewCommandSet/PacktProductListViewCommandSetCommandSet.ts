@@ -6,6 +6,8 @@ import {
   type ListViewStateChangedEventArgs
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
+import { IHttpService } from '../../services/IHttpService';
+import HttpService from '../../services/HttpService';
 
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
@@ -13,21 +15,26 @@ import { Dialog } from '@microsoft/sp-dialog';
  * You can define an interface to describe it.
  */
 export interface IPacktProductListViewCommandSetCommandSetProperties {
-  // This is an example; replace with your own properties
-  sampleTextOne: string;
-  sampleTextTwo: string;
+  lowStockThreshold: number;
+  stockUpdatedMessage: string;
+  powerAutomateUrl: string;
 }
 
 const LOG_SOURCE: string = 'PacktProductListViewCommandSetCommandSet';
 
 export default class PacktProductListViewCommandSetCommandSet extends BaseListViewCommandSet<IPacktProductListViewCommandSetCommandSetProperties> {
 
+  private _httpService: IHttpService;
+
   public onInit(): Promise<void> {
     Log.info(LOG_SOURCE, 'Initialized PacktProductListViewCommandSetCommandSet');
 
+    // Initialize the HttpService
+    this._httpService = new HttpService(this.context.httpClient);
+
     // initial state of the command's visibility
-    const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
-    compareOneCommand.visible = false;
+    const updateStockCommand: Command = this.tryGetCommand('UPDATE_STOCK_COMMAND');
+    updateStockCommand.visible = false;
 
     this.context.listView.listViewStateChangedEvent.add(this, this._onListViewStateChanged);
 
@@ -36,15 +43,33 @@ export default class PacktProductListViewCommandSetCommandSet extends BaseListVi
 
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
     switch (event.itemId) {
-      case 'COMMAND_1':
-        Dialog.alert(`${this.properties.sampleTextOne}`).catch(() => {
-          /* handle error */
-        });
-        break;
-      case 'COMMAND_2':
-        Dialog.alert(`${this.properties.sampleTextTwo}`).catch(() => {
-          /* handle error */
-        });
+      case 'UPDATE_STOCK_COMMAND':
+        const selectedRows = this.context.listView.selectedRows;
+
+        if (!selectedRows || selectedRows.length !== 1) {
+          Dialog.alert('Please select one item to update the stock level');
+          return;
+        }
+
+        const selectedRow = selectedRows[0];
+        const productId = selectedRow.getValueByName('ID');
+        const productStockLevel = selectedRow.getValueByName('packtProductStockLevel');
+
+        // Update the stock level of the selected product
+        const powerAutomateUrl = this.properties.powerAutomateUrl;
+        const powerAutomatePayload = {
+          id: productId,
+          stockLevel: productStockLevel
+        };
+
+        this._httpService.post(powerAutomateUrl, powerAutomatePayload)
+          .then(() => {
+            Dialog.alert(`${this.properties.stockUpdatedMessage}`);
+          })
+          .catch((error) => {
+            Dialog.alert(`Error updating stock level: ${error}`);
+          });
+
         break;
       default:
         throw new Error('Unknown command');
@@ -54,13 +79,28 @@ export default class PacktProductListViewCommandSetCommandSet extends BaseListVi
   private _onListViewStateChanged = (args: ListViewStateChangedEventArgs): void => {
     Log.info(LOG_SOURCE, 'List view state changed');
 
-    const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
-    if (compareOneCommand) {
-      // This command should be hidden unless exactly one row is selected.
-      compareOneCommand.visible = this.context.listView.selectedRows?.length === 1;
-    }
+    const updateStockCommand: Command = this.tryGetCommand('UPDATE_STOCK_COMMAND');
+    if (updateStockCommand) {
 
-    // TODO: Add your logic here
+      const selectedRows = this.context.listView.selectedRows;
+
+      // Ensure exactly one item is selected
+      if (selectedRows?.length === 1) {
+        const stockLevel = selectedRows[0].getValueByName('packtProductStockLevel');
+
+        const lowStockThreshold = this.properties.lowStockThreshold || 10;
+
+        // Show the command only if stockLevel is less than lowStockThreshold
+        if (stockLevel !== undefined && stockLevel < lowStockThreshold) {
+          updateStockCommand.visible = true;
+        } else {
+          updateStockCommand.visible = false;
+        }
+      } else {
+        updateStockCommand.visible = false;
+      }
+
+    }
 
     // You should call this.raiseOnChage() to update the command bar
     this.raiseOnChange();
