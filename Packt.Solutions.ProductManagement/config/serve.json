@@ -70,6 +70,18 @@
           }
         }
       }
+    },
+    "packtProductListViewCommandSet": {
+      "pageUrl": "https://anoopccdev1.sharepoint.com/sites/Packt/Lists/Products/AllItems.aspx",
+      "customActions": {
+        "4212521c-3db3-4be4-8454-b7dfaac158b7": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "lowStockThreshold": 10,
+            "stockUpdatedMessage": "Stock updated successfully"
+          }
+        }
+      }
     }
   }
 }
