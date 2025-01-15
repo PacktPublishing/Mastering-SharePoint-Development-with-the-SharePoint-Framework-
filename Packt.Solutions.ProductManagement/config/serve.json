@@ -4,15 +4,7 @@
   "https": true,
   "serveConfigurations": {
     "default": {
-      "pageUrl": "https://anoopccdev1.sharepoint.com/sites/Packt/_layouts/15/SPListForm.aspx",
-      "formCustomizer": {
-        "componentId": "d50d2f22-ea4d-4c5e-832a-e2555d67f815",
-        "PageType": 8,
-        "RootFolder": "/sites/Packt/Lists/Products",
-        "properties": {
-          "sampleText": "Value"
-        }
-      }
+      "pageUrl": "https://{tenantDomain}/_layouts/workbench.aspx"
     },
     "packtProductFormCustomizer_NewForm": {
       "pageUrl": "https://{tenantDomain}/_layouts/15/SPListForm.aspx",
@@ -83,5 +75,6 @@
         }
       }
     }
-  }
+  },
+  "initialPage": "https://{tenantDomain}/_layouts/workbench.aspx"
 }
