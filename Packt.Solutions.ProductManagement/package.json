@@ -29,7 +29,8 @@
     "@microsoft/decorators": "1.19.0",
     "@microsoft/sp-listview-extensibility": "1.19.0",
     "@microsoft/sp-dialog": "1.19.0",
-    "@microsoft/sp-application-base": "1.19.0"
+    "@microsoft/sp-application-base": "1.19.0",
+    "@microsoft/sp-adaptive-card-extension-base": "1.19.0"
   },
   "devDependencies": {
     "@microsoft/rush-stack-compiler-4.7": "0.1.0",
