@@ -62,7 +62,7 @@ export class ProductCatalogService implements IProductCatalogService {
 
     } catch (error) {
       Log.error("ProductCatalogService", error);
-      return [];
+      throw new Error(error);
     }
   }  
 }

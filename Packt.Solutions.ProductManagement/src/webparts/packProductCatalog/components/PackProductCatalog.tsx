@@ -6,7 +6,7 @@ import {
 import { IPacktProductCatalogState } from "./IPacktProductCatalogState";
 import { GridLayout } from "@pnp/spfx-controls-react/lib/GridLayout";
 import { ISize } from "@fluentui/react/lib/Utilities";
-import { IDocumentCardPreviewProps, ImageFit, DocumentCard, DocumentCardType, DocumentCardPreview, DocumentCardLocation, DocumentCardDetails, DocumentCardTitle } from "@fluentui/react";
+import { IDocumentCardPreviewProps, ImageFit, DocumentCard, DocumentCardType, DocumentCardPreview, DocumentCardLocation, DocumentCardDetails, DocumentCardTitle, MessageBar, MessageBarType } from "@fluentui/react";
 
 export default class PackProductCatalog extends React.Component<
   IPackProductCatalogProps,
@@ -17,6 +17,7 @@ export default class PackProductCatalog extends React.Component<
     super(props);
     this.state = {
       productItems: [],
+      errorMessage: ""
     };
   }
   
@@ -53,15 +54,27 @@ export default class PackProductCatalog extends React.Component<
 
   public render(): React.ReactElement<IPackProductCatalogProps> {
 
-    return  <GridLayout
-              ariaLabel="List of content, use right and left arrow keys to navigate, arrow down to access details."
-              items={this.state.productItems}
-              onRenderGridItem={(item: any, finalSize: ISize, isCompact: boolean) => this._onRenderGridItem(item, finalSize, isCompact)}
-            />
+    return  <>
+            { this.state.errorMessage ? 
+              <MessageBar messageBarType={MessageBarType.error}>{this.state.errorMessage}</MessageBar> 
+              :
+              <GridLayout
+                ariaLabel="List of content, use right and left arrow keys to navigate, arrow down to access details."
+                items={this.state.productItems}
+                onRenderGridItem={(item: any, finalSize: ISize, isCompact: boolean) => this._onRenderGridItem(item, finalSize, isCompact)}
+              />
+            }
+            </>
   }
   
   public async componentDidMount(): Promise<void> {
-    await this.getItems();
+    try {
+      await this.getItems();
+    } catch (error) {
+      this.setState({
+        errorMessage: error.toString()
+      })
+    }
   }
 
   public async componentDidUpdate(prevProps: Readonly<IPackProductCatalogProps>): Promise<void> {

@@ -1,5 +1,6 @@
 import { IProductCatalogItem } from "../../../models/IProductCatalogItem";
 
 export interface IPacktProductCatalogState {
-    productItems: IProductCatalogItem[]
+    productItems: IProductCatalogItem[],
+    errorMessage: string
 }
