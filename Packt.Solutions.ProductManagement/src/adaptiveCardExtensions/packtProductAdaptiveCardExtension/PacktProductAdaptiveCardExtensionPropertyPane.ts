@@ -12,6 +12,9 @@ export class PacktProductAdaptiveCardExtensionPropertyPane {
               groupFields: [
                 PropertyPaneTextField('title', {
                   label: strings.TitleFieldLabel
+                }),
+                PropertyPaneTextField('productsListName', {
+                  label: "Products List Name"
                 })
               ]
             }
