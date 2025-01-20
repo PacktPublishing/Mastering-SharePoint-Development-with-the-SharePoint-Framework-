@@ -1,28 +1,30 @@
 {
-  "schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-  "type": "AdaptiveCard",
-  "version": "1.5",
-  "body": [
-    {
-      "type": "TextBlock",
-      "weight": "Bolder",
-      "text": "${title}"
-    },
-    {
-      "type": "ColumnSet",
-      "columns": [
-        {
-          "type": "Column",
-          "items": [
-            {
-              "type": "TextBlock",
-              "weight": "Bolder",
-              "text": "${subTitle}",
-              "wrap": true
-            }
-          ]
-        }
-      ]
-    }
-  ]
+	"schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"$data": "${productStocks}",
+					"type": "Column",
+					"width": "auto",
+					"verticalContentAlignment": "bottom",
+					"items": [
+						{
+							"type": "Image",
+							"url": "data:image/svg+xml,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20width%3D%2210%22%20height%3D%2210%22%20fill%3D%22${color}%22/%3E%3C/svg%3E",
+							"size": "small"
+						},
+						{
+							"type": "TextBlock",
+							"text": "${formatNumber(stock, 0)}",
+							"horizontalAlignment": "left"
+						}
+					]
+				}
+			]
+		}
+	]
 }

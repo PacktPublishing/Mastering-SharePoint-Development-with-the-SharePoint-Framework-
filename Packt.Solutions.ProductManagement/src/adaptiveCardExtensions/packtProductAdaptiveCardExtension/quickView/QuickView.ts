@@ -1,13 +1,12 @@
 import { ISPFxAdaptiveCard, BaseAdaptiveCardQuickView } from '@microsoft/sp-adaptive-card-extension-base';
-import * as strings from 'PacktProductAdaptiveCardExtensionAdaptiveCardExtensionStrings';
 import {
   IPacktProductAdaptiveCardExtensionAdaptiveCardExtensionProps,
-  IPacktProductAdaptiveCardExtensionAdaptiveCardExtensionState
+  IPacktProductAdaptiveCardExtensionAdaptiveCardExtensionState,
+  IProductStock
 } from '../PacktProductAdaptiveCardExtensionAdaptiveCardExtension';
 
 export interface IQuickViewData {
-  subTitle: string;
-  title: string;
+  productStocks: IProductStock[];
 }
 
 export class QuickView extends BaseAdaptiveCardQuickView<
@@ -16,9 +15,9 @@ export class QuickView extends BaseAdaptiveCardQuickView<
   IQuickViewData
 > {
   public get data(): IQuickViewData {
+    const { productStocks } = this.state;
     return {
-      subTitle: strings.SubTitle,
-      title: strings.Title
+      productStocks
     };
   }
 
