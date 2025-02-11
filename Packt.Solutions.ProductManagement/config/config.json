@@ -57,6 +57,14 @@
           "manifest": "./src/adaptiveCardExtensions/packtProductAdaptiveCardExtension/PacktProductAdaptiveCardExtensionAdaptiveCardExtension.manifest.json"
         }
       ]
+    },
+    "packt-product-search-query-modifier-search-query-modifier": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/packtProductSearchQueryModifier/PacktProductSearchQueryModifierSearchQueryModifier.js",
+          "manifest": "./src/extensions/packtProductSearchQueryModifier/PacktProductSearchQueryModifierSearchQueryModifier.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -67,6 +75,7 @@
     "PacktProductApplicationCustomizerApplicationCustomizerStrings": "lib/extensions/packtProductApplicationCustomizer/loc/{locale}.js",
     "PacktProductFieldCustomizerFieldCustomizerStrings": "lib/extensions/packtProductFieldCustomizer/loc/{locale}.js",
     "PacktProductListViewCommandSetCommandSetStrings": "lib/extensions/packtProductListViewCommandSet/loc/{locale}.js",
-    "PacktProductAdaptiveCardExtensionAdaptiveCardExtensionStrings": "lib/adaptiveCardExtensions/packtProductAdaptiveCardExtension/loc/{locale}.js"
+    "PacktProductAdaptiveCardExtensionAdaptiveCardExtensionStrings": "lib/adaptiveCardExtensions/packtProductAdaptiveCardExtension/loc/{locale}.js",
+    "PacktProductSearchQueryModifierSearchQueryModifierStrings": "lib/extensions/packtProductSearchQueryModifier/loc/{locale}.js"
   }
 }

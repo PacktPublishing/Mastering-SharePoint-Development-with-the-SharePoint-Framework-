@@ -76,6 +76,17 @@
           }
         }
       }
+    },
+    "packtProductSearchQueryModifier": {
+      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "customActions": {
+        "37f614c8-2e8a-43f9-abb1-d924ea9fab26": {
+          "location": "ClientSideExtension.SearchQueryModifier",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
     }
   }
 }
