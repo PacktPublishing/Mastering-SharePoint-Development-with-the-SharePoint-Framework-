@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Guid, Version } from '@microsoft/sp-core-library';
+import { /* Guid, */ Version } from '@microsoft/sp-core-library';
 import {
   PropertyPaneDynamicField,
   PropertyPaneHorizontalRule,
@@ -42,13 +42,19 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
   private _runInTeams: boolean;
 
   public render(): void {
+
+    // if useDynamicSearchQuery is true, the searchQuery property will be a dynamic property 
+    // and if this.properties.searchQuery.reference is "PageContext:SearchData:searchQuery" then useSearchQueryModifier will be true
+    const useSearchQueryModifier = this.properties.useDynamicSearchQuery && this.properties.searchQuery.reference === "PageContext:SearchData:searchQuery";
+
     const element: React.ReactElement<IPackProductCatalogProps> =
       React.createElement(PackProductCatalog, {
         productCatalogService: this._productCatalogService,
         siteId: this.context.pageContext.site.id.toString(),
         listName: this.properties.productsListName,
         itemsCount: this.properties.itemsCount,
-        searchQuery: this.properties.searchQuery.tryGetValue()
+        searchQuery: this.properties.searchQuery.tryGetValue(),
+        useSearchQueryModifier: useSearchQueryModifier
       });
 
     ReactDom.render(element, this.domElement);
@@ -199,10 +205,10 @@ export default class PackProductCatalogWebPart extends BaseClientSideWebPart<IPa
       if (this.properties.useDynamicSearchQuery) {
         groupFields.push(
           PropertyPaneDynamicField('searchQuery', {
-            label: strings.PropertyPane.SearchQueryDynamicField,
+            label: strings.PropertyPane.SearchQueryDynamicField/* ,
             filters: {
               componentId: Guid.tryParse("c6609154-e547-4c70-957e-9ec482df52a1")
-            }           
+            } */           
           }),
           /* Scenario when consuming multiple dynamic properties from a single source 
   

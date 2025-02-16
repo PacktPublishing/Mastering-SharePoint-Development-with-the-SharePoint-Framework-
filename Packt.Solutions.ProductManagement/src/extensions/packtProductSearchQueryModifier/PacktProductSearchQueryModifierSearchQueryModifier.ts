@@ -1,7 +1,7 @@
 import { Log } from '@microsoft/sp-core-library';
 import { BaseSearchQueryModifier, IQuery, SearchQueryScenario } from '@microsoft/sp-search-extensibility';
 
-import * as strings from 'PacktProductSearchQueryModifierSearchQueryModifierStrings';
+// import * as strings from 'PacktProductSearchQueryModifierSearchQueryModifierStrings';
 
 /**
  * If your search query modifier uses the ClientSideComponentProperties JSON input,
@@ -18,14 +18,13 @@ const LOG_SOURCE: string = 'PacktProductSearchQueryModifierSearchQueryModifier';
 export default class PacktProductSearchQueryModifierSearchQueryModifier extends BaseSearchQueryModifier<IPacktProductSearchQueryModifierSearchQueryModifierProperties> {
 
   public onInit(): Promise<void> {
-    console.log("In onInit of PacktProductSearchQueryModifierSearchQueryModifier");
     Log.info(LOG_SOURCE, 'Initialized PacktProductSearchQueryModifierSearchQueryModifier');
     return Promise.resolve();
   }
 
   public modifySearchQuery(query: IQuery, scenario: SearchQueryScenario): Promise<IQuery> {
-    console.log("In modifySearchQuery of PacktProductSearchQueryModifierSearchQueryModifier");
-    Log.info(LOG_SOURCE, `Modifying query ${query.queryText} with ${strings.Title}`);
+    query.queryText = `startswith(fields/packtProductReference, '${query.queryText}')`;
+    console.log(`Modified query: ${query.queryText}`);
     return Promise.resolve(query);
   }
 }

@@ -6,4 +6,5 @@ export interface IPackProductCatalogProps {
   listName: string;
   itemsCount: number;
   searchQuery?: string;
+  useSearchQueryModifier?: boolean;
 }
