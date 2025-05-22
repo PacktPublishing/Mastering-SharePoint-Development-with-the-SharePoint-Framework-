@@ -7,6 +7,6 @@
     </picture>
 </p>
 
-## Chapter 9: Deploying a SharePoint Web Part
+## Chapter 8: Deploying a SharePoint Web Part
 
-This branch covers the technical content related to the chapter 9 **"Deploying a SharePoint Web Part"**.
+This branch covers the technical content related to the chapter 8 **"Deploying a SharePoint Web Part"**.
