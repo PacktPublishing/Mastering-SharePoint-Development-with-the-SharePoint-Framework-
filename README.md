@@ -55,7 +55,7 @@ Before reading this book, experience with web development is strongly recommende
 | 1-22 | **Node.js** - long-term support (LTS) version, preferably Node.js 18.x | Windows, macOS, or Linux |
 | 1-22 | **Microsoft 365 developer tenant** | Windows, macOS, or Linux |
 
-Windows 10 or 11** (preferred), **macOS**, or **Linux**.
+**Windows 10 or 11** (preferred), **macOS**, or **Linux**.
 
 ### Running Samples from the GitHub Repository
 To run the samples, you will also need:
